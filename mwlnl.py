@@ -65,7 +65,7 @@ class WlocalData:
         df = pd.DataFrame(objects)
         df =  df[['client', 'crt', 'nm', 'id', "act"]]
         df["crt"] = df["crt"].astype(str)
-        df.insert(2, 'Monitoring System ID',' 11')
+        df.insert(2, 'Monitoring System ID',' 16')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('wlocal.csv', index=False)
 
