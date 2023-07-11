@@ -2,46 +2,47 @@ import csv
 import datetime
 import schedule
 import time
-from mwln import WialonData
-from mfrt import FortData
-from mgls import GlanassData
-from mspic import ScautData
-from mera import EraData
-from mwlnl import WlocalData
+
 
 def job():
+    import mwln
+    import mfrt
+    import mgls
+    import mspic
+    import mera
+    import mwlnl
 
-    wialon = WialonData()
+    wialon = mwln.WialonData()
     wialon.dict_to_csv()
     
     time.sleep(60)
 
-    fort = FortData()
+    fort = mfrt.FortData()
     fort.list_to_csv()
 
     time.sleep(60)
 
-    glanass = GlanassData()
+    glanass = mgls.GlanassData()
     glanass.list_to_csv()
 
     time.sleep(60)
 
-    scaut = ScautData()
+    scaut = mspic.ScautData()
     scaut.list_to_csv()
 
     time.sleep(60)
 
-    era = EraData()
+    era = mera.EraData()
     era.list_to_csv()
 
     time.sleep(60)
 
-    wlocal = WlocalData()
+    wlocal = mwlnl.WlocalData()
     wlocal.dict_to_csv()
 
     time.sleep(60)
 
-
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     # Открываем новый файл для записи
     with open(f'{current_time}_all_gets.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
