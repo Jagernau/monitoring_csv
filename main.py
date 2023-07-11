@@ -3,41 +3,41 @@ import datetime
 import schedule
 import time
 
+from mwln import WialonData
+from mfrt import FortData
+from mgls import GlanassData
+from mspic import ScautData
+from mera import EraData
+from mwlnl import WlocalData
 
 def job():
-    import mwln
-    import mfrt
-    import mgls
-    import mspic
-    import mera
-    import mwlnl
 
-    wialon = mwln.WialonData()
+    wialon = WialonData()
     wialon.dict_to_csv()
     
     time.sleep(60)
 
-    fort = mfrt.FortData()
+    fort = FortData()
     fort.list_to_csv()
 
     time.sleep(60)
 
-    glanass = mgls.GlanassData()
+    glanass = GlanassData()
     glanass.list_to_csv()
 
     time.sleep(60)
 
-    scaut = mspic.ScautData()
+    scaut = ScautData()
     scaut.list_to_csv()
 
     time.sleep(60)
 
-    era = mera.EraData()
+    era = EraData()
     era.list_to_csv()
 
     time.sleep(60)
 
-    wlocal = mwlnl.WlocalData()
+    wlocal = WlocalData()
     wlocal.dict_to_csv()
 
     time.sleep(60)
@@ -56,27 +56,32 @@ def job():
         # Открываем второй файл и добавляем его содержимое в новый файл
         with open('fort.csv', mode='r', encoding='utf-8') as second_get_file:
             second_get_reader = csv.reader(second_get_file)
+            next(second_get_reader)
             all_gets_writer.writerows(second_get_reader)
 
         # Открываем третий файл и добавляем его содержимое в новый файл
         with open('glonqssoft.csv', mode='r', encoding='utf-8') as third_get_file:
             third_get_reader = csv.reader(third_get_file)
+            next(third_get_reader)
             all_gets_writer.writerows(third_get_reader)
 
-        with open('scaut.csv', mode='r', encoding='utf-8') as third_get_file:
-            third_get_reader = csv.reader(third_get_file)
-            all_gets_writer.writerows(third_get_reader)
+        with open('scaut.csv', mode='r', encoding='utf-8') as for_get_file:
+            for_get_reader = csv.reader(for_get_file)
+            next(for_get_reader)
+            all_gets_writer.writerows(for_get_reader)
 
-        with open('era.csv', mode='r', encoding='utf-8') as third_get_file:
-            third_get_reader = csv.reader(third_get_file)
-            all_gets_writer.writerows(third_get_reader)
+        with open('era.csv', mode='r', encoding='utf-8') as five_get_file:
+            five_get_reader = csv.reader(five_get_file)
+            next(five_get_reader)
+            all_gets_writer.writerows(five_get_reader)
 
-        with open('wlocal.csv', mode='r', encoding='utf-8') as third_get_file:
-            third_get_reader = csv.reader(third_get_file)
-            all_gets_writer.writerows(third_get_reader)
+        with open('wlocal.csv', mode='r', encoding='utf-8') as six_get_file:
+            six_get_reader = csv.reader(six_get_file)
+            next(six_get_reader)
+            all_gets_writer.writerows(six_get_reader)
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("02:40").do(job)
+schedule.every().day.at("16:26").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()
