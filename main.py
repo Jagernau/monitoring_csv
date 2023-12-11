@@ -81,7 +81,7 @@ def job():
             all_gets_writer.writerows(six_get_reader)
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("01:26").do(job)
+schedule.every().day.at("01:30").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()
