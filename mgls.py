@@ -90,5 +90,3 @@ class GlanassData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('glonqssoft.csv', index=False)
 
-glanas = GlanassData()
-glanas.list_to_csv()

@@ -69,5 +69,3 @@ class WlocalData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('wlocal.csv', index=False)
 
-wlocal = WlocalData()
-wlocal.dict_to_csv()

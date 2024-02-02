@@ -81,5 +81,3 @@ class FortData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('fort.csv', index=False)
 
-fort = FortData()
-fort.list_to_csv()

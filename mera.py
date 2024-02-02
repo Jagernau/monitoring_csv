@@ -93,5 +93,3 @@ class EraData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('era.csv', index=False)
 
-era = EraData()
-era.list_to_csv()
