@@ -69,5 +69,3 @@ class WialonData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('wialon.csv', index=False)
 
-wialon = WialonData()
-wialon.dict_to_csv()

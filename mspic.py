@@ -92,5 +92,3 @@ class ScautData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('scaut.csv', index=False)
 
-scaut = ScautData()
-scaut.list_to_csv()

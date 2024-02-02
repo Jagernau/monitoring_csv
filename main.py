@@ -11,36 +11,37 @@ from mera import EraData
 from mwlnl import WlocalData
 
 def job():
+    time.sleep(30)
 
     wialon = WialonData()
     wialon.dict_to_csv()
     
-    time.sleep(60)
+    time.sleep(30)
 
     fort = FortData()
     fort.list_to_csv()
 
-    time.sleep(60)
+    time.sleep(30)
 
     glanass = GlanassData()
     glanass.list_to_csv()
 
-    time.sleep(60)
+    time.sleep(30)
 
     scaut = ScautData()
     scaut.list_to_csv()
 
-    time.sleep(60)
+    time.sleep(30)
 
     era = EraData()
     era.list_to_csv()
 
-    time.sleep(60)
+    time.sleep(30)
 
     wlocal = WlocalData()
     wlocal.dict_to_csv()
 
-    time.sleep(60)
+    time.sleep(30)
 
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -81,8 +82,9 @@ def job():
             all_gets_writer.writerows(six_get_reader)
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("01:26").do(job)
+schedule.every().day.at("01:30").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()
     time.sleep(1)
+
