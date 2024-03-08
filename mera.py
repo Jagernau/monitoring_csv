@@ -14,6 +14,7 @@ from thrift.protocol import TBinaryProtocol
 
 from params import presp
 
+from database import crud
 
 class EraData:
 
@@ -91,5 +92,20 @@ class EraData:
         df['Days Active'] = ' Да'
         df.insert(2, 'Monitoring System ID',' 15')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+
         df.to_csv('era.csv', index=False)
+
+        list_obj = []
+        for i in data:
+            list_obj.append(
+                    [
+                        str(i["unm"]),
+                        i["uid"],
+                        " 15",
+                        i["onm"],
+                        i["oid"],
+                        " Да",
+                    ]
+                    )
+        crud.add_objects(list_obj)
 

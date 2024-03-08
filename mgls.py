@@ -5,6 +5,7 @@ import typing
 import pandas as pd
 import re
 
+from database import crud
 
 class GlanassData:
     """
@@ -88,5 +89,20 @@ class GlanassData:
         df["unm"] = df["unm"].astype(str)
         df.insert(2, 'Monitoring System ID',' 13')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+
         df.to_csv('glonqssoft.csv', index=False)
+
+        list_obj = []
+        for i in data:
+            list_obj.append(
+                    [
+                        str(i["unm"]),
+                        i["uid"],
+                        " 13",
+                        i["nm"],
+                        i["oid"],
+                        " Да",
+                    ]
+                    )
+        crud.add_objects(list_obj)
 

@@ -5,6 +5,9 @@ import typing
 import pandas as pd
 import re
 
+from database import crud
+
+
 class WialonData:
     """
     Класс для работы с API Wialon
@@ -63,9 +66,30 @@ class WialonData:
             item["crt"] = " " + str(item["crt"])
             item["id"] = " " + str(item["id"])
 
+
         df = pd.DataFrame(objects)
         df =  df[['client', 'crt', 'nm', 'id', "act"]]
         df.insert(2, 'Monitoring System ID',' 11')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
-        df.to_csv('wialon.csv', index=False)
+
+        df.to_csv('wialon.csv', index=False) #сохраняем в csv
+
+
+        #берём нужные даннные выгрузки словаря и превращаем их в list
+        list_obj = [] #сам список
+        #цикл по словарю для пермещения в list_obj
+        for i in objects:
+            client_name = i.get('client', 'Неработает_тест')
+            list_obj.append(
+                    [
+                        client_name,
+                        i["crt"],
+                        " 11",
+                        i["nm"],
+                        i["id"],
+                        i["act"],
+                    ]
+                    )
+
+        crud.add_objects(list_obj)
 

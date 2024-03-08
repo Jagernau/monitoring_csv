@@ -4,6 +4,8 @@ import typing
 import pandas as pd
 import re
 
+from database import crud
+
 class FortData:
     """
     Класс для работы с API Форт
@@ -79,5 +81,21 @@ class FortData:
         df['Days Active'] = ' Да'
         df.insert(2, 'Monitoring System ID',' 12')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+
         df.to_csv('fort.csv', index=False)
+
+
+        list_obj = []
+        for i in data:
+            list_obj.append(
+                    [
+                        str(i["unm"]),
+                        i["uid"],
+                        " 12",
+                        i["name"],
+                        i["id"],
+                        " Да",
+                    ]
+                    )
+        crud.add_objects(list_obj)
 

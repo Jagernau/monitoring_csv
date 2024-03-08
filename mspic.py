@@ -6,6 +6,8 @@ import typing
 import pandas as pd
 import re
 
+from database import crud
+
 class ScautData:
     """ 
     Класс для работы с API Скаут
@@ -90,5 +92,22 @@ class ScautData:
         company_id = " " + df['CompanyId'].astype(str) + df['Description']
         df['CompanyId'] = company_id
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+
         df.to_csv('scaut.csv', index=False)
 
+
+        list_obj = []
+        for i in data:
+
+            client_name = i.get('Description', 'Неработает_тест')
+            list_obj.append(
+                    [
+                        client_name,
+                        i["CompanyId"],
+                        " 14",
+                        i["Name"],
+                        i["UnitId"],
+                        " Да",
+                    ]
+                    )
+        crud.add_objects(list_obj)

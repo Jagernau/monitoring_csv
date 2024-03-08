@@ -1,12 +1,6 @@
-from collections.abc import ItemsView
+from database import postgres_models as pgmodels
 
-from sqlalchemy.util import EMPTY_DICT
-
-import postgres_models as pgmodels
-import mysql_models as mysqlmodels
-
-from bd_conectors import PostgresDatabase as pgdb
-from bd_conectors import MysqlDatabase as mysqldb
+from database.bd_conectors import PostgresDatabase as pgdb
 
 import datetime
 
@@ -16,7 +10,6 @@ def get_last_pg_id_database():
     session.close()
     return data
 
-print(get_last_pg_id_database())
 
 def add_objects(marge_data: list):
     current_date = datetime.datetime.now()
@@ -26,6 +19,8 @@ def add_objects(marge_data: list):
     last_id = int(get_last_pg_id_database()[0])
     session = pgdb().session
     for i in marge_data:
+        last_id += 1
+            
         objects_data = pgmodels.Tdata(
                 login = i[0],
                 idlogin = i[1],
@@ -33,9 +28,10 @@ def add_objects(marge_data: list):
                 object = i[3],
                 idobject = i[4],
                 isactive = i[5],
-                id = last_id + 1,
-                dimport = f"{current_day}.{current_month}.{current_year} 1:40"
+                id = last_id,
+                dimport = f"{current_month}.{current_day}.{current_year} 1:40"
                 )
         session.add(objects_data)
     session.commit()
     session.close()
+
