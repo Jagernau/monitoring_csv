@@ -98,7 +98,7 @@ class Tagat(Base):
 class Tdata(Base):
     __tablename__ = 'tdata'
 
-    id = Column(BigInteger, Identity(always=True, start=1, increment=1, minvalue=1, maxvalue=9223372036854775807, cycle=False, cache=1), primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     login = Column(Text)
     idlogin = Column(Text)
     idsystem = Column(Integer)

@@ -3,6 +3,7 @@ from database import postgres_models as pgmodels
 from database.bd_conectors import PostgresDatabase as pgdb
 
 import datetime
+from sqlalchemy import text
 
 def get_last_pg_id_database():
     session = pgdb().session
@@ -22,13 +23,13 @@ def add_objects(marge_data: list):
         last_id += 1
             
         objects_data = pgmodels.Tdata(
+                id = last_id,
                 login = i[0],
                 idlogin = i[1],
                 idsystem = i[2],
                 object = i[3],
                 idobject = i[4],
                 isactive = i[5],
-                id = last_id,
                 dimport = f"{current_month}.{current_day}.{current_year} 1:40"
                 )
         session.add(objects_data)

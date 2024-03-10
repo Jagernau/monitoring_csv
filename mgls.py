@@ -6,6 +6,22 @@ import pandas as pd
 import re
 
 from database import crud
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
+# Создание обработчика для записи в файл
+file_handler = logging.FileHandler('log.txt')
+file_handler.setLevel(logging.INFO)
+
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Добавление обработчика к логгеру
+logger.addHandler(file_handler)
 
 class GlanassData:
     """
@@ -104,5 +120,13 @@ class GlanassData:
                         " Да",
                     ]
                     )
-        crud.add_objects(list_obj)
+        #блок логирования успешности добавления объектов
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты добавлены в базу данных")
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из glanass возникла ошибка: {e}")
+
+glanass = GlanassData()
+glanass.list_to_csv()
 
