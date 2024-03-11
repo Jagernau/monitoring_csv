@@ -1,11 +1,10 @@
 from wialon.sdk import WialonSdk
 from params import presp
-import json
-import typing
 import pandas as pd
 import re
 
 from database import crud
+from my_logger import logger
 
 
 class WialonData:
@@ -82,7 +81,7 @@ class WialonData:
             client_name = i.get('client', 'Неработает_тест')
             list_obj.append(
                     [
-                        client_name,
+                        str(client_name),
                         i["crt"],
                         " 11",
                         i["nm"],
@@ -90,6 +89,10 @@ class WialonData:
                         i["act"],
                     ]
                     )
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты из wialonhost добавлены в базу данных")
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из wialon возникла ошибка: {e}")
 
-        crud.add_objects(list_obj)
 

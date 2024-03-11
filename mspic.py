@@ -5,8 +5,8 @@ from params import presp
 import typing
 import pandas as pd
 import re
-
 from database import crud
+from my_logger import logger
 
 class ScautData:
     """ 
@@ -102,7 +102,7 @@ class ScautData:
             client_name = i.get('Description', 'Неработает_тест')
             list_obj.append(
                     [
-                        client_name,
+                        str(client_name),
                         i["CompanyId"],
                         " 14",
                         i["Name"],
@@ -110,4 +110,9 @@ class ScautData:
                         " Да",
                     ]
                     )
-        crud.add_objects(list_obj)
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты из scaut добавлены в базу данных")
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из scaut возникла ошибка: {e}")
+

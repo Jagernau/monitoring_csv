@@ -4,8 +4,8 @@ import params
 import re
 import json
 import pandas as pd
-
 from database import crud
+from my_logger import logger
 
 class WlocalData:
     def __init__(self):
@@ -84,6 +84,10 @@ class WlocalData:
                         i["act"],
                     ]
                     )
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты из wlocal добавлены в базу данных")
 
-        crud.add_objects(list_obj)
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из wlocal возникла ошибка: {e}")
 

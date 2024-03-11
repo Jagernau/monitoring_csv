@@ -30,7 +30,7 @@ if __name__ == "__main__":
         connector=str(config.connection_postgres),
         filename="postgres_models"
     )
-    generate_mysql_models(
-        connector=str(config.connection_mysql),
-        filename="mysql_models"
-    )
+    # generate_mysql_models(
+    #     connector=str(config.connection_mysql),
+    #     filename="mysql_models"
+    # )

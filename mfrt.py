@@ -5,6 +5,7 @@ import pandas as pd
 import re
 
 from database import crud
+from my_logger import logger
 
 class FortData:
     """
@@ -97,5 +98,10 @@ class FortData:
                         " Да",
                     ]
                     )
-        crud.add_objects(list_obj)
-
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты из fort добавлены в базу данных")
+            
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из fort возникла ошибка: {e}")
+            

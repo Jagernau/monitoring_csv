@@ -3,7 +3,6 @@ from database import postgres_models as pgmodels
 from database.bd_conectors import PostgresDatabase as pgdb
 
 import datetime
-from sqlalchemy import text
 
 def get_last_pg_id_database():
     session = pgdb().session

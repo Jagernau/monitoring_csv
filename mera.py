@@ -1,5 +1,4 @@
 import sys
-import json
 import pandas as pd
 import re
 
@@ -11,10 +10,9 @@ from thrif.dispatch.server.thrif.backend.DispatchBackend import *
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
-
 from params import presp
-
 from database import crud
+from my_logger import logger
 
 class EraData:
 
@@ -107,5 +105,10 @@ class EraData:
                         " Да",
                     ]
                     )
-        crud.add_objects(list_obj)
+
+        try:
+            crud.add_objects(list_obj)
+            logger.info("Объекты из Era добавлены в базу данных")
+        except Exception as e:
+            logger.error(f"В добавлении в базу данных объектов из Era возникла ошибка: {e}")
 

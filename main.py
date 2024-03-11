@@ -9,24 +9,8 @@ from mgls import GlanassData
 from mspic import ScautData
 from mera import EraData
 from mwlnl import WlocalData
-import logging
-
 from send_to_yandex import send_csv_to_yandex
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
-# Создание обработчика для записи в файл
-file_handler = logging.FileHandler('log.txt')
-file_handler.setLevel(logging.INFO)
-
-
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-
-# Добавление обработчика к логгеру
-logger.addHandler(file_handler)
+from my_logger import logger
 
 
 def job():
