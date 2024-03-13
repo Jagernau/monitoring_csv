@@ -99,7 +99,7 @@ class EraData:
                     [
                         str(i["unm"]),
                         i["uid"],
-                        " 15",
+                        "15",
                         i["onm"],
                         i["oid"],
                         " Да",

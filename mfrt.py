@@ -75,8 +75,8 @@ class FortData:
         for item in data:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["name"])
-            item["uid"] = " " + str(item["uid"])
-            item["id"] = " " + str(item["id"])
+            item["uid"] = str(item["uid"])
+            item["id"] = str(item["id"])
         df = pd.DataFrame(data)
         df =  df[['unm', 'uid', 'name', 'id']]
         df['Days Active'] = ' Да'
@@ -92,7 +92,7 @@ class FortData:
                     [
                         str(i["unm"]),
                         i["uid"],
-                        " 12",
+                        "12",
                         i["name"],
                         i["id"],
                         " Да",

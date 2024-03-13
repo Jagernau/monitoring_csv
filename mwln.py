@@ -62,8 +62,8 @@ class WialonData:
                     obj["client"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", usr["nm"])
         
         for item in objects:
-            item["crt"] = " " + str(item["crt"])
-            item["id"] = " " + str(item["id"])
+            item["crt"] = str(item["crt"])
+            item["id"] = str(item["id"])
 
 
         df = pd.DataFrame(objects)
@@ -83,7 +83,7 @@ class WialonData:
                     [
                         str(client_name),
                         i["crt"],
-                        " 11",
+                        "11",
                         i["nm"],
                         i["id"],
                         i["act"],

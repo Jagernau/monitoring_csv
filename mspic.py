@@ -103,13 +103,13 @@ class ScautData:
                 client_name = 'Неработает_тест'
             else:
                 client_name = i["Description"]
-            company_id = " " + i['CompanyId'] + i['Description']
+            companys_id = " " + i['CompanyId'] + i['Description']
 
             list_obj.append(
                     [
                         str(client_name),
-                        str(company_id),
-                        " 14",
+                        str(companys_id),
+                        "14",
                         i["Name"],
                         i["UnitId"],
                         " Да",

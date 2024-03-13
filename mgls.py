@@ -82,7 +82,7 @@ class GlanassData:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["nm"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["nm"])
             item["uid"] = " " + str(item["uid"])
-            item["oid"] = " " + str(item["oid"])
+            item["oid"] = str(item["oid"])
             
         df = pd.DataFrame(data)
         df =  df[['unm', 'uid', 'nm', 'oid']]
@@ -99,7 +99,7 @@ class GlanassData:
                     [
                         str(i["unm"]),
                         i["uid"],
-                        " 13",
+                        "13",
                         i["nm"],
                         i["oid"],
                         " Да",
