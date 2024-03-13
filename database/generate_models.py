@@ -1,7 +1,7 @@
 from subprocess import call
 import sys
 sys.path.append('../')
-from monitoring_csv import config
+from monitoring_db_autosave import config
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))

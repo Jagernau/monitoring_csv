@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 import sys
 sys.path.append('../')
-from monitoring_csv import config
+from monitoring_db_autosave import config
 
 class MysqlDatabase: 
     BASE: Final = declarative_base()

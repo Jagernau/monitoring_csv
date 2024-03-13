@@ -83,7 +83,7 @@ class ScautData:
         for item in data:
             item["Description"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Description"])
             item["Name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Name"])
-            item["UnitId"] = " " + str(item["UnitId"])
+            item["UnitId"] = str(item["UnitId"])
             
         df = pd.DataFrame(data)
         df = df[['Description', 'CompanyId', 'Name', 'UnitId']]
@@ -99,11 +99,16 @@ class ScautData:
         list_obj = []
         for i in data:
 
-            client_name = i.get('Description', 'Неработает_тест')
+            if i["Description"] == "":
+                client_name = 'Неработает_тест'
+            else:
+                client_name = i["Description"]
+            company_id = " " + i['CompanyId'] + i['Description']
+
             list_obj.append(
                     [
                         str(client_name),
-                        i["CompanyId"],
+                        str(company_id),
                         " 14",
                         i["Name"],
                         i["UnitId"],

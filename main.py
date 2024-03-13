@@ -72,7 +72,7 @@ def job():
 
     try:
     # Открываем новый файл для записи
-        with open(f'{current_time}_all_gets.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
+        with open(f'{current_time}_all_gets_autosave.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
             all_gets_writer = csv.writer(all_gets_file)
 
             # Открываем первый файл и добавляем его содержимое в новый файл
@@ -114,14 +114,14 @@ def job():
     time.sleep(30)
 
     try:
-        send_csv_to_yandex(f"{current_time}_all_gets.csv")
+        send_csv_to_yandex(f"{current_time}_all_gets_autosave.csv")
         logger.info("Все данные успешно отправлены на Яндекс.Диск")
     except Exception as e:
         logger.error(f"В отправке данных возникла ошибка: {e}")
 
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("00:20").do(job)
+schedule.every().day.at("02:10").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()

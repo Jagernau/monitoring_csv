@@ -5,7 +5,7 @@ import datetime
 current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 # Открываем новый файл для записи
-with open(f'{current_time}_all_gets.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
+with open(f'{current_time}_all_gets_autosave.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
     all_gets_writer = csv.writer(all_gets_file)
 
     # Открываем первый файл и добавляем его содержимое в новый файл
