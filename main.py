@@ -11,7 +11,7 @@ from mera import EraData
 from mwlnl import WlocalData
 from send_to_yandex import send_csv_to_yandex
 from my_logger import logger
-
+from config import time_active
 
 def job():
     try:
@@ -121,7 +121,7 @@ def job():
 
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("02:10").do(job)
+schedule.every().day.at(str(time_active)).do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()

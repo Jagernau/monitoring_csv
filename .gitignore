@@ -169,4 +169,4 @@ cython_debug/
 *.pdf
 *.doc
 *.docx
-
+log.txt

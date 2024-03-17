@@ -7,11 +7,21 @@ import re
 
 from database import crud
 from my_logger import logger
+import config
 
 class GlanassData:
     """
     Класс для работы с API GlanasSoft
     """
+
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Auth": "_replace",
+    }
+    url_auth = "https://hosting.glonasssoft.ru/api/v3/auth/login"
+    url_agents = "https://hosting.glonasssoft.ru/api//agents"
+
     def __init__(self) -> None:
 
             self.params = dict()
@@ -24,12 +34,15 @@ class GlanassData:
         Делает выгрузку из системы мониторинга GlanasSoft
         """
 
-        url_base = self.params["13"]["url_base"]
-        api_cmd = self.params["13"]["api_cmd"]
-        headers = self.params["13"]["headers"]
-        params = self.params["13"]["params"]
-        response = requests.post(url_base + api_cmd, headers=headers, json=params)
-        AuthKey = response.json()
+        auth_response = requests.post(
+                self.url_auth,
+                headers=self.headers,
+                json={
+                    "login": str(config.GLONASS_LOGIN),
+                    "password": str(config.GLONASS_PASSWORD),
+                    },
+                )
+        AuthKey = auth_response.json()["AuthId"]
 
         url_base = self.params["1301"]["url_base"]
         api_cmd = self.params["1301"]["api_cmd"]
