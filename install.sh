@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Зеленая подсветка текста
 GREEN='\033[0;32m'
+# Красная подсветка текста
 RED='\033[0;31m'
-NC='\033[0m' # No Color
+# Белая подсветка текста
+NC='\033[0m'
 
 
 # Зеленая подсветка текста
@@ -38,7 +41,7 @@ fi
 # Check if Docker Compose is installed
 if command -v docker-compose &> /dev/null
 then
-    echo -e "${GREEN}Docker Compose уже установлен.${NC}"
+    echo "${GREEN}Docker Compose уже установлен.${NC}"
     docker-compose --version
 else
     read -p "Docker Compose не установлен. Хотите установить Docker Compose? (y/n): " choice
@@ -59,4 +62,40 @@ else
         echo "Тогда не получится запустить программу"
         exit 1
     fi
+fi
+
+echo "${GREEN}Первичная установка завершена${NC}"
+git clone https://github.com/Jagernau/monitoring_csv -b auto_create monitoring_db_autosave
+
+cd monitoring_db_autosave
+
+# Создание файла .env
+touch .env
+
+# Функция для проверки логина и пароля Glonasssoft
+check_glonass_credentials() {
+    local login=$1
+    local password=$2
+    local auth_id=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"login\": \"$login\", \"password\": \"$password\"}" https://hosting.glonasssoft.ru/api/v3/auth/login | jq -r '.AuthId')
+
+    if [ -n "$auth_id" ]; then
+        echo "Логин и Пароль для Glonasssoft верны."
+        # Запись Логина и Пароля в файл .env
+        echo "GLONASS_LOGIN=$login" >> .env
+        echo "GLONASS_PASSWORD=$password" >> .env
+    else
+        echo "Логин или Пароль для Glonasssoft неверны."
+        read -p "Введите Логин для Glonasssoft: " new_login
+        read -p "Введите Пароль для Glonasssoft: " new_password
+        check_glonass_credentials $new_login $new_password
+    fi
+}
+
+# Проверка подключения Glonasssoft
+read -p "Подключить Glonasssoft? (y/n): " glonass_choice
+if [ "$glonass_choice" == "y" ] || [ "$glonass_choice" == "Y" ]; then
+    read -p "Введите Логин для Glonasssoft: " glonass_login
+    read -p "Введите Пароль для Glonasssoft: " glonass_password
+
+    check_glonass_credentials $glonass_login $glonass_password
 fi
