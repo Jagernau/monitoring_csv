@@ -1,10 +1,26 @@
 #!/bin/bash
 
 
-if ! [ -x "$(command -v docker)" ]; then
-    echo 'Error: docker is not installed.' >&2
-    exit 1
-fi
+if command -v docker &> /dev/null
+then
+    echo "Docker уже установлен."
+    docker --version
+else
+    read -p "Docker не установлен. Хотите установить Docker? (y/n): " choice
+    if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
+        # Установка Docker
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
 
-#показать версию docker
-docker --version
+        # Проверка успешной установки Docker и вывод версии
+        if command -v docker &> /dev/null
+        then
+            echo "Docker успешно установлен."
+            docker --version
+        else
+            echo "Установка Docker не удалась."
+        fi
+    else
+        echo "Установка Docker отменена."
+    fi
+fi
