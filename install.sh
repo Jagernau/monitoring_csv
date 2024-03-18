@@ -91,7 +91,7 @@ check_glonass_credentials() {
 
 # Проверка подключения Glonasssoft
 read -p "Подключить Glonasssoft? (y/n): " glonass_choice
-if [ "$glonass_choice" == "y" ] || [ "$glonass_choice" == "Y" ]; then
+if [ "$glonass_choice" = "y" ] || [ "$glonass_choice" = "Y" ]; then
     read -p "Введите Логин для Glonasssoft: " glonass_login
     read -p "Введите Пароль для Glonasssoft: " glonass_password
 
