@@ -65,7 +65,7 @@ else
 fi
 
 echo "${GREEN}Первичная установка завершена${NC}"
-git clone https://github.com/Jagernau/monitoring_csv -b auto_create monitoring_db_autosave && wait
+git clone https://github.com/Jagernau/monitoring_csv -b auto_create monitoring_db_autosave &&
 
 cd monitoring_db_autosave
 
