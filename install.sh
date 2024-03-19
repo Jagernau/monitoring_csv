@@ -66,6 +66,9 @@ fi
 
 echo "${GREEN}Первичная установка завершена${NC}"
 
+mkdir auto_create
+
+cd auto_create
 
 # Создание файла .env
 touch .env
@@ -74,13 +77,14 @@ touch .env
 check_glonass_credentials() {
     local login=$1
     local password=$2
-    local auth_id=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"login\": \"$login\", \"password\": \"$password\"}" https://hosting.glonasssoft.ru/api/v3/auth/login | jq -r '.AuthId')
+    local auth_id=$(curl -s -X POST -H "Content-Type: application/json" -d "{\"login\": \"$login\", \"password\": \"$password\"}" https://hosting.glonasssoft.ru/api/v3/auth/login)
 
     if [ -n "$auth_id" ]; then
+        echo "Логин и Пароль для Glonasssoft верны. AuthId: $auth_id"
         echo "Логин и Пароль для Glonasssoft верны."
         # Запись Логина и Пароля в файл .env
-        echo "GLONASS_LOGIN=$login" >> .env
-        echo "GLONASS_PASSWORD=$password" >> .env
+        echo "GLONASS_LOGIN=\"$login\"" >> .env
+        echo "GLONASS_PASSWORD=\"$password\"" >> .env
     else
         echo "Логин или Пароль для Glonasssoft неверны."
         read -p "Введите Логин для Glonasssoft: " new_login

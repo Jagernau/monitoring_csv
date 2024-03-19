@@ -157,38 +157,6 @@ def presp():
             "url_base": "https://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/getobjectslist",
         },
-        "13": {
-            "url_base": "https://hosting.glonasssoft.ru/api/v3",
-            "api_cmd": "/auth/login",
-            "params": {"login": os.getenv("13_LOGIN"), "password": os.getenv("13_PASSWORD")},
-            "headers": {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Auth": "_replace",
-            },
-        },
-        "1301": {
-            "url_base": "https://hosting.glonasssoft.ru/api",
-            "api_cmd": "/agents",
-            "params": {"parentId": "_replace"},
-            "headers": {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Auth": "_replace",
-            },
-        },
-        "1302": {
-            "url_base": "https://hosting.glonasssoft.ru/api/v3",
-            "api_cmd": "/vehicles/find",
-            "params": {
-                "parentId": "_replace id agents",
-            },
-            "headers": {
-                "Content-Type": "application/json",
-                "Accept": "*/*",
-                "X-Auth": "_replace",
-            },
-        },
         "14": {
             "url_base": os.getenv("14_URL"),
             "api_cmd": "/spic/auth/rest/Login",
