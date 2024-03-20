@@ -6,72 +6,64 @@ import re
 
 from database import crud
 from my_logger import logger
+import config
 
 class FortData:
     """
     Класс для работы с API Форт
     """
-    def __init__(self) -> None:
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+    payload: dict[str, typing.Any] = {"companyId": 0}
 
-            self.params = dict()
-            self.params = presp()
-            self.companies = dict()
-            self.data = list()
+    url_auth = "https://fm.suntel-nn.ru/api/integration/v1/connect"
+    url_companies_list = "https://fm.suntel-nn.ru/api/integration/v1/getcompanieslist"
+    url_objects = "https://fm.suntel-nn.ru/api/integration/v1/getobjectslist"
 
-    def __conn(self) -> typing.List:
+    def get_data(self) -> typing.List:
         """
         Делает выгрузку из системы мониторинга Форт
         """
-        url_base = self.params["12"]["url_base"]
-        api_cmd = self.params["12"]["api_cmd"]
-        headers = self.params["12"]["headers"]
-        params = self.params["12"]["params"]
 
-        resp = requests.get(url_base + api_cmd, headers=headers, params=params)
+        resp_session_id = requests.get(self.url_auth, headers=self.headers, params={
+            "login": str(config.FORT_LOGIN),
+            "password": str(config.FORT_PASSWORD),
+            "lang": "ru-ru",
+            "timezone": "+3",
+            })
+        # добавляем в шапку токен
+        token = resp_session_id.headers["SessionId"]
+        self.headers["SessionId"] = str(token)
+        # добавляем в payload токен
+        self.payload["SessionId"] = str(token)
 
-        Session_Id = resp.headers["SessionId"]
+        companies = requests.get(self.url_companies_list, headers=self.headers, params=self.payload).json()
 
-        url_base = self.params["1201"]["url_base"]
-        api_cmd = self.params["1201"]["api_cmd"]
-        headers = self.params["1201"]["headers"]
-        headers["SessionId"] = Session_Id
-        payload = self.params["1201"]["payload"]
-        payload["companyId"] = 0
+        data = list()
 
-        resp = requests.get(url_base + api_cmd, headers=headers, params=payload)
+        for el in companies:
+            self.payload["companyId"] = el["id"]
+            objects = requests.get(
+                    self.url_objects, 
+                    headers=self.headers, 
+                    params=self.payload
+                    ).json()["objects"]
 
-        rlist = dict()
-        rlist = resp.json()
-
-        self.companies["companies"] = rlist["companies"]
-
-        url_base = self.params["1202"]["url_base"]
-        api_cmd = self.params["1202"]["api_cmd"]
-        headers = self.params["1202"]["headers"]
-        headers["SessionId"] = Session_Id
-        payload = self.params["1202"]["payload"]
-
-        for el in self.companies["companies"]:
-            payload["companyId"] = el["id"]  # ell
-            resp = requests.get(url_base + api_cmd, headers=headers, params=payload)
-
-            rlist = resp.json()
-
-            for e in rlist["objects"]:
+            for e in objects:
                 e["uid"] = el["id"]
                 e["unm"] = el["name"]
-                self.data.append(e)
+                data.append(e)
 
-        res = self.data
-
-        return res
+        return data
 
 
     def list_to_csv(self) -> None:
         """
         Формирует CSV файл из json Fort, адаптирует под Ромину бд
         """
-        data = self.__conn()
+        data = self.get_data()
         for item in data:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["name"])
@@ -84,7 +76,6 @@ class FortData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
 
         df.to_csv('fort.csv', index=False)
-
 
         list_obj = []
         for i in data:
