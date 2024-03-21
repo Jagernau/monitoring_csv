@@ -1,51 +1,69 @@
 from wialon.sdk import WialonSdk
-from params import presp
-import params
 import re
-import json
 import pandas as pd
+
 from database import crud
 from my_logger import logger
+import config
 
 class WlocalData:
-    def __init__(self):
+    
+    """
+    Класс для работы с API Wialon local
+    """
+    user_parametrs = {
+                    "spec": {
+                        "itemsType": "user",
+                        "propName": "sys_name",
+                        "propValueMask": "*",
+                        "sortType": "sys_name",
+                        "or_logic": 0
+                    },
+                    "force": 1,
+                    "flags": 265,
+                    "from": 0,
+                    "to": 0
+    }
 
-            self.params = dict()
-            self.params = presp()
-            self.companies = dict()
-            self.data = list()
+    objects_parametrs = {
+                        "spec": {
+                            "itemsType": "avl_unit",
+                            "propName": "sys_name,rel_user_creator_name",
+                            "propValueMask": "*,*",
+                            "sortType": "sys_name,rel_user_creator_name",
+                            "or_logic": 0
+                        },
+                        "force": 1,
+                        "flags": 269,
+                        "from": 0,
+                        "to": 0
+    }
+    
+    def get_data(self):
+
+        sdk = WialonSdk(
+            is_development=True, 
+            scheme='https',
+            host='suntel-wialon.ru',
+            port=0,
+            session_id='',
+            extra_params=""
+        )
+
+        response = sdk.login(str(config.WIALON_LOCAL_TOKEN))
+        users = sdk.core_search_items(self.user_parametrs)
+
+        units = sdk.core_search_items(self.objects_parametrs)
+
+        sdk.logout()
+
+        data = {"objects": units["items"], "users": users["items"]}
 
 
-    def __conn(self):
-
-        # Initialize Wialon instance
-            sdk = WialonSdk(
-                is_development=self.params["1101"]["WialonSdk"]["is_development"],
-                scheme=self.params["1101"]["WialonSdk"]["scheme"],
-                host=self.params["1101"]["WialonSdk"]["host"],
-                port=self.params["1101"]["WialonSdk"]["port"],
-                session_id=self.params["1101"]["WialonSdk"]["session_id"],
-                extra_params=self.params["1101"]["WialonSdk"]["extra_params"],
-            )
-
-            token = self.params["1101"]["token"]
-            response = sdk.login(token)
-            parameters = self.params["1101"]["Parameters"]["user"]
-            users = sdk.core_search_items(parameters)
-
-            parameters = self.params["1101"]["Parameters"]["avl_unit"]
-            units = sdk.core_search_items(parameters)
-
-            # self.data = units['items']
-
-            sdk.logout()
-
-            res = {"objects": units["items"], "users": users["items"]}
-
-            return res
+        return data
 
     def dict_to_csv(self):
-        data = self.__conn()
+        data = self.get_data()
         objects = data["objects"]
         users = data["users"]
         for obj in objects:

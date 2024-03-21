@@ -1,5 +1,4 @@
 import requests
-from params import presp
 import typing
 import pandas as pd
 import re
@@ -39,7 +38,7 @@ class FortData:
         # добавляем в payload токен
         self.payload["SessionId"] = str(token)
 
-        companies = requests.get(self.url_companies_list, headers=self.headers, params=self.payload).json()
+        companies = requests.get(self.url_companies_list, headers=self.headers, params=self.payload).json()["companies"]
 
         data = list()
 
@@ -95,4 +94,4 @@ class FortData:
             
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из fort возникла ошибка: {e}")
-            
+

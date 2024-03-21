@@ -2,9 +2,9 @@ import sys
 import pandas as pd
 import re
 
-sys.path.append('gen-py')
-
-print(sys.path)
+# sys.path.append('gen-py')
+#
+# print(sys.path)
 
 from thrif.dispatch.server.thrif.backend.DispatchBackend import *
 from thrift.transport import TSocket

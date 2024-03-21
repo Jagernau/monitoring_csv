@@ -1,53 +1,69 @@
 from wialon.sdk import WialonSdk
-from params import presp
 import pandas as pd
 import re
 
 from database import crud
 from my_logger import logger
-
+import config
 
 class WialonData:
     """
     Класс для работы с API Wialon
     """
-    def __init__(self) -> None:
 
-            self.params = dict()
-            self.params = presp()
-            self.companies = dict()
-            self.data = list()
+    user_parametrs = {
+                    "spec": {
+                        "itemsType": "user",
+                        "propName": "sys_name",
+                        "propValueMask": "*",
+                        "sortType": "sys_name",
+                        "or_logic": 0
+                    },
+                    "force": 1,
+                    "flags": 265,
+                    "from": 0,
+                    "to": 0
+    }
 
-    def __conn(self):
+    objects_parametrs = {
+                        "spec": {
+                            "itemsType": "avl_unit",
+                            "propName": "sys_name,rel_user_creator_name",
+                            "propValueMask": "*,*",
+                            "sortType": "sys_name,rel_user_creator_name",
+                            "or_logic": 0
+                        },
+                        "force": 1,
+                        "flags": 269,
+                        "from": 0,
+                        "to": 0
+    }
+    
+    def get_data(self):
 
         sdk = WialonSdk(
-            is_development=self.params["11"]["WialonSdk"]["is_development"],
-            scheme=self.params["11"]["WialonSdk"]["scheme"],
-            host=self.params["11"]["WialonSdk"]["host"],
-            port=self.params["11"]["WialonSdk"]["port"],
-            session_id=self.params["11"]["WialonSdk"]["session_id"],
-            extra_params=self.params["11"]["WialonSdk"]["extra_params"],
+            is_development=True, 
+            scheme='https',
+            host='hst-api.wialon.com',
+            port=0,
+            session_id='',
+            extra_params=""
         )
 
-        token = self.params["11"]["token"]
-        response = sdk.login(token)
-        parameters = self.params["11"]["Parameters"]["user"]
-        users = sdk.core_search_items(parameters)
+        response = sdk.login(str(config.WIALON_TOKEN))
+        users = sdk.core_search_items(self.user_parametrs)
 
-        parameters = self.params["11"]["Parameters"]["avl_unit"]
-        units = sdk.core_search_items(parameters)
-
-        # self.data = units['items']
+        units = sdk.core_search_items(self.objects_parametrs)
 
         sdk.logout()
 
-        res = {"objects": units["items"], "users": users["items"]}
+        data = {"objects": units["items"], "users": users["items"]}
 
 
-        return res
+        return data
 
     def dict_to_csv(self):
-        data = self.__conn()
+        data = self.get_data()
         objects = data["objects"]
         users = data["users"]
         for obj in objects:
@@ -94,5 +110,4 @@ class WialonData:
             logger.info("Объекты из wialonhost добавлены в базу данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из wialon возникла ошибка: {e}")
-
 

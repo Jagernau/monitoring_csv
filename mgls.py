@@ -21,7 +21,6 @@ class GlanassData:
     url_agents = "https://hosting.glonasssoft.ru/api/agents"
     url_vehicles = "https://hosting.glonasssoft.ru/api/v3/vehicles/find"
 
-
     def get_data(self) -> typing.List:
         """
         Делает выгрузку из системы мониторинга GlanasSoft
