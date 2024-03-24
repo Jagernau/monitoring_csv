@@ -1,85 +1,70 @@
-#Закоментируй код, сделай typing, сделай коментарии
 import requests
 from datetime import datetime
-from params import presp
 import typing
 import pandas as pd
 import re
 from database import crud
 from my_logger import logger
+import config
 
 class ScautData:
     """ 
     Класс для работы с API Скаут
-    """
+    """ 
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+    url_auth = "http://89.208.197.19:11501/spic/auth/rest/Login"
+    url_companies = "http://89.208.197.19:11501/spic/unitGroups/rest/"
+    url_units = "http://89.208.197.19:11501/spic/units/rest/getUnits"
+    
+    params = {
+        "Login": config.SCAUT_LOGIN,
+        "Password": config.SCAUT_PASSWORD,
+        "TimeStampUtc": "/Date(" + str(int(datetime.timestamp(datetime.now()))) + ")/",
+        "TimeZoneOlsonId": "Europe/Moscow",
+        "CultureName": "ru-ru",
+        "UiCultureName": "ru-ru",
+    }
 
-    def __init__(self) -> None:
-
-            self.params = dict()
-            self.params = presp()
-            self.companies = dict()
-            self.data = list()
-
-    def __conn(self) -> typing.List:
+    def get_data(self) -> typing.List:
         """
         Делает выгрузку из системы мониторинга Скаут
         """
 
+        resp_session_id = requests.post(self.url_auth, headers=self.headers, json=self.params)
 
-        url_base = self.params["14"]["url_base"]
-        api_cmd = self.params["14"]["api_cmd"]
-        headers = self.params["14"]["headers"]
-        params = self.params["14"]["params"]
+        self.headers["ScoutAuthorization"] = resp_session_id.json()["SessionId"]
+        resp_session_id.close()
 
-        dt = datetime.now()
-        ts = datetime.timestamp(dt)
-        ts = int(ts)
+        resp_companies = requests.get(self.url_companies, headers=self.headers)
+        companies = resp_companies.json()
+        resp_companies.close()
 
-        params["TimeStampUtc"] = "/Date(" + str(ts) + ")/"
+        units_ids = companies["Groups"][int(0)]["UnitIds"]
+        self.params["Requests"] = []
 
-        resp = requests.post(url_base + api_cmd, json=params)
+        for item in units_ids:
+            self.params["Requests"].append({"ObjectId": item})
 
-        AuthKey = resp.json()["SessionId"]
-        resp.close()
-        url_base = self.params["14"]["url_base"]
-        api_cmd = self.params["1401"]["api_cmd"]
-        headers["ScoutAuthorization"] = AuthKey
+        resp_units = requests.post(
+                self.url_units, 
+                headers=self.headers, 
+                json=self.params)
 
-        resp = requests.get(url_base + api_cmd, headers=headers)
+        data = resp_units.json()["Units"]
+        resp_units.close()
 
-        rlist = resp.json()
-        resp.close()
-        self.companies["companies"] = rlist
 
-        d0 = self.params["1401"]["unitGroups"]["d0"]
-        l0 = self.params["1401"]["unitGroups"]["l0"]
-        d1 = self.params["1401"]["unitGroups"]["d1"]
-        units = rlist[d0][l0][d1]
-        url_base = self.params["14"]["url_base"]
-        api_cmd = self.params["1402"]["api_cmd"]
-        params = self.params["1402"]["params"]
-
-        for el in units:
-            params["Requests"].append({"ObjectId": el})
-
-        headers["ScoutAuthorization"] = AuthKey
-
-        resp = requests.post(url_base + api_cmd, headers=headers, json=params)
-
-        rlist = resp.json()
-        resp.close()
-        self.data = rlist["Units"]
-
-        res = self.data
-
-        return res
+        return data
 
 
     def list_to_csv(self) -> None:
         """
         Формирует CSV файл из json Скаут, адаптированный под Ромину бд
         """
-        data = self.__conn()
+        data = self.get_data()
         for item in data:
             item["Description"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Description"])
             item["Name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Name"])

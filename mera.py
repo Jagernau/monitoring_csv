@@ -2,38 +2,23 @@ import sys
 import pandas as pd
 import re
 
-# sys.path.append('gen-py')
-#
-# print(sys.path)
-
 from thrif.dispatch.server.thrif.backend.DispatchBackend import *
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
-from params import presp
 from database import crud
 from my_logger import logger
+import config
 
 class EraData:
 
-    def __init__(self):
 
-        self.params = dict()
-        self.params = presp()
-        self.groups = list()
-        self.elm = dict()
-        self.data = list()
+    def get_data(self):
 
-    def __conn(self):
-
-        url_base = self.params['15']['url_base']
-        url_port = self.params['15']['url_port']
-        login = self.params['15']['params']['login']
-        pwd = self.params['15']['params']['pwd']
-        long_session = self.params['15']['long_session']
+        objects = []
 
         # Подключить сокет
-        transport = TSocket.TSocket(url_base, url_port)
+        transport = TSocket.TSocket("monitoring.aoglonass.ru", 19990)
         transport = TTransport.TFramedTransport(transport)
         # Получить TBinaryProtocol
         protocol = TBinaryProtocol.TBinaryProtocol(transport)
@@ -41,44 +26,48 @@ class EraData:
         open = transport.open()
         # Создать клиента
         client = Client(protocol)
-        # Подключить транспорт канала
 
         # Вызов функции без возвращаемого значения
-        id = client.login(login, pwd, long_session)
-        inf_u = client.getCurrentUser(id)
-        #inf_g = client.getGroup(id, inf_u.parentGroupId)
-        inf_o = client.getChildrenMonitoringObjects(id, inf_u.parentGroupId, True)
+        session_id = client.login(
+                config.ERA_LOGIN, 
+                config.ERA_PASSWORD,
+                True)
+        inf_user = client.getCurrentUser(session_id)
+        inf_objects = client.getChildrenMonitoringObjects(
+                session_id, 
+                inf_user.parentGroupId,
+                True)
 
         ostr = list()
-        #ostr = []
         i = 0
-        for el in inf_o:
+        for el in inf_objects:
             if len(ostr) == 0:
                 ostr = [el.name]
 
             ostr.append(el.name)
 
-            inf_g = client.getGroup(id, el.parentGroupId)
+            inf_groups = client.getGroup(
+                    session_id, 
+                    el.parentGroupId)
 
-            self.data.append({'uid': el.parentGroupId, 'unm': inf_g.title, 'onm': el.name,
-                'IMEI': el.tracker.identifier, 'oid': el.id})
+            objects.append({
+                'uid': el.parentGroupId, 
+                'unm': inf_groups.title, 
+                'onm': el.name,
+                'IMEI': el.tracker.identifier, 
+                'oid': el.id})
             i += 1
-
-        self.groups = client.getChildrenGroups(id, inf_u.parentGroupId, True)
 
         # Закрываем канал транспорта
         transport.close()
-        res = { 'objects': self.data,
-                'companies': self.groups
-        }
 
-        return res['objects']
+        return objects
 
     def list_to_csv(self) -> None:
         """
         Формирует CSV файл из json Era, адаптирует под Ромину бд
         """
-        data = self.__conn()
+        data = self.get_data()
         for item in data:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["onm"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["onm"])
@@ -111,4 +100,5 @@ class EraData:
             logger.info("Объекты из Era добавлены в базу данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из Era возникла ошибка: {e}")
+
 
