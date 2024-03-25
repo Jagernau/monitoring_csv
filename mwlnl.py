@@ -44,7 +44,7 @@ class WlocalData:
         sdk = WialonSdk(
             is_development=True, 
             scheme='https',
-            host='suntel-wialon.ru',
+            host=str(config.WIALON_LOCAL_HOST),
             port=0,
             session_id='',
             extra_params=""

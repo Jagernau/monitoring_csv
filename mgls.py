@@ -17,9 +17,9 @@ class GlanassData:
         "Content-Type": "application/json",
         "Accept": "application/json",
     }
-    url_auth = "https://hosting.glonasssoft.ru/api/v3/auth/login"
-    url_agents = "https://hosting.glonasssoft.ru/api/agents"
-    url_vehicles = "https://hosting.glonasssoft.ru/api/v3/vehicles/find"
+    url_auth = str(config.GLONASS_HOST) + "/api/v3/auth/login"
+    url_agents = str(config.GLONASS_HOST) + "/api/agents"
+    url_vehicles = str(config.GLONASS_HOST) + "/api/v3/vehicles/find"
 
     def get_data(self) -> typing.List:
         """

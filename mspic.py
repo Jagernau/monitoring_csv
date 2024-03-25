@@ -15,9 +15,9 @@ class ScautData:
         "Content-Type": "application/json",
         "Accept": "application/json",
     }
-    url_auth = "http://89.208.197.19:11501/spic/auth/rest/Login"
-    url_companies = "http://89.208.197.19:11501/spic/unitGroups/rest/"
-    url_units = "http://89.208.197.19:11501/spic/units/rest/getUnits"
+    url_auth = str(config.SCAUT_HOST) + "/spic/auth/rest/Login"
+    url_companies = str(config.SCAUT_HOST) + "/spic/unitGroups/rest/"
+    url_units = str(config.SCAUT_HOST) + "/spic/units/rest/getUnits"
     
     params = {
         "Login": config.SCAUT_LOGIN,

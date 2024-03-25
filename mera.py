@@ -18,7 +18,7 @@ class EraData:
         objects = []
 
         # Подключить сокет
-        transport = TSocket.TSocket("monitoring.aoglonass.ru", 19990)
+        transport = TSocket.TSocket(str(config.ERA_HOST), 19990)
         transport = TTransport.TFramedTransport(transport)
         # Получить TBinaryProtocol
         protocol = TBinaryProtocol.TBinaryProtocol(transport)

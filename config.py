@@ -3,24 +3,30 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 # Глонасс
+GLONASS_HOST=config['GLONASS_HOST']
 GLONASS_LOGIN=config['GLONASS_LOGIN']
 GLONASS_PASSWORD=config['GLONASS_PASSWORD']
 
 # Форт
+FORT_HOST=config['FORT_HOST']
 FORT_LOGIN=config['FORT_LOGIN']
 FORT_PASSWORD=config['FORT_PASSWORD']
 
 # Wialon
+WIALON_HOST=config['WIALON_HOST']
 WIALON_TOKEN=config['WIALON_TOKEN']
 
 # Wialon local
+WIALON_LOCAL_HOST=config['WIALON_LOCAL_HOST']
 WIALON_LOCAL_TOKEN=config['WIALON_LOCAL_TOKEN']
 
 # Scout
+SCAUT_HOST=config['SCAUT_HOST'] # с портом
 SCAUT_LOGIN=config['SCAUT_LOGIN']
 SCAUT_PASSWORD=config['SCAUT_PASSWORD']
 
 # Era
+ERA_HOST=config['ERA_HOST']
 ERA_LOGIN=config['ERA_LOGIN']
 ERA_PASSWORD=config['ERA_PASSWORD']
 

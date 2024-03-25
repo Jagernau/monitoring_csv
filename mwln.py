@@ -44,7 +44,7 @@ class WialonData:
         sdk = WialonSdk(
             is_development=True, 
             scheme='https',
-            host='hst-api.wialon.com',
+            host=str(config.WIALON_HOST),
             port=0,
             session_id='',
             extra_params=""

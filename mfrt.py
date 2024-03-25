@@ -17,9 +17,9 @@ class FortData:
     }
     payload: dict[str, typing.Any] = {"companyId": 0}
 
-    url_auth = "https://fm.suntel-nn.ru/api/integration/v1/connect"
-    url_companies_list = "https://fm.suntel-nn.ru/api/integration/v1/getcompanieslist"
-    url_objects = "https://fm.suntel-nn.ru/api/integration/v1/getobjectslist"
+    url_auth = str(config.FORT_HOST) + "/api/integration/v1/connect"
+    url_companies_list = str(config.FORT_HOST) + "/api/integration/v1/getcompanieslist"
+    url_objects = str(config.FORT_HOST) + "/api/integration/v1/getobjectslist"
 
     def get_data(self) -> typing.List:
         """
