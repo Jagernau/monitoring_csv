@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 import re
+import typing
 
 from thrif.dispatch.server.thrif.backend.DispatchBackend import *
 from thrift.transport import TSocket
@@ -61,19 +62,20 @@ class EraData:
         # Закрываем канал транспорта
         transport.close()
 
-        return objects
 
-    def list_to_csv(self) -> None:
-        """
-        Формирует CSV файл из json Era, адаптирует под Ромину бд
-        """
-        data = self.get_data()
-        for item in data:
+        for item in objects:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["onm"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["onm"])
             item["uid"] = " " + item["uid"]
             item["oid"] = " " + item["oid"]
 
+        return objects
+
+    @staticmethod
+    def data_to_csv(data: typing.List) -> None:
+        """
+        Формирует CSV файл из json Era, адаптирует под Ромину бд
+        """
         df = pd.DataFrame(data)
         df =  df[['unm', 'uid', 'onm', 'oid']]
         df['Days Active'] = ' Да'
@@ -82,6 +84,8 @@ class EraData:
 
         df.to_csv('era.csv', index=False)
 
+    @staticmethod
+    def add_to_db(data: typing.List) -> None:
         list_obj = []
         for i in data:
             list_obj.append(
@@ -95,10 +99,9 @@ class EraData:
                     ]
                     )
 
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из Era добавлены в базу данных")
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из Era возникла ошибка: {e}")
+        crud.add_objects(list_obj)
+
+    def __str__(self) -> str:
+        return str("era")
 
 

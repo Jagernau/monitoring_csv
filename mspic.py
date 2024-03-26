@@ -56,19 +56,18 @@ class ScautData:
         data = resp_units.json()["Units"]
         resp_units.close()
 
-
-        return data
-
-
-    def list_to_csv(self) -> None:
-        """
-        Формирует CSV файл из json Скаут, адаптированный под Ромину бд
-        """
-        data = self.get_data()
         for item in data:
             item["Description"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Description"])
             item["Name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["Name"])
             item["UnitId"] = str(item["UnitId"])
+
+        return data
+
+    @staticmethod
+    def data_to_csv(data: typing.List) -> None:
+        """
+        Формирует CSV файл из json Скаут, адаптированный под Ромину бд
+        """
             
         df = pd.DataFrame(data)
         df = df[['Description', 'CompanyId', 'Name', 'UnitId']]
@@ -81,6 +80,8 @@ class ScautData:
         df.to_csv('scaut.csv', index=False)
 
 
+    @staticmethod
+    def add_to_db(data: typing.List) -> None:
         list_obj = []
         for i in data:
 
@@ -100,9 +101,8 @@ class ScautData:
                         " Да",
                     ]
                     )
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из scaut добавлены в базу данных")
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из scaut возникла ошибка: {e}")
+        crud.add_objects(list_obj)
 
+
+    def __str__(self) -> str:
+        return str("scaut")

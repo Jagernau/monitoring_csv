@@ -5,6 +5,7 @@ import pandas as pd
 from database import crud
 from my_logger import logger
 import config
+import typing
 
 class WlocalData:
     
@@ -59,11 +60,6 @@ class WlocalData:
 
         data = {"objects": units["items"], "users": users["items"]}
 
-
-        return data
-
-    def dict_to_csv(self):
-        data = self.get_data()
         objects = data["objects"]
         users = data["users"]
         for obj in objects:
@@ -80,14 +76,22 @@ class WlocalData:
         for item in objects:
             item["crt"] = str(item["crt"])
             item["id"] = str(item["id"])
+
+        return objects
+
+    @staticmethod
+    def data_to_csv(objects: typing.List) -> None:
  
         df = pd.DataFrame(objects)
         df =  df[['client', 'crt', 'nm', 'id', "act"]]
         df["crt"] = df["crt"].astype(str)
         df.insert(2, 'Monitoring System ID',' 16')
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+
         df.to_csv('wlocal.csv', index=False)
 
+    @staticmethod
+    def add_to_db(objects: typing.List) -> None:
         list_obj = [] #сам список
         #цикл по словарю для пермещения в list_obj
         for i in objects:
@@ -102,10 +106,8 @@ class WlocalData:
                         i["act"],
                     ]
                     )
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из wlocal добавлены в базу данных")
+        crud.add_objects(list_obj)
 
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из wlocal возникла ошибка: {e}")
 
+    def __str__(self) -> str:
+        return str("wlocal")

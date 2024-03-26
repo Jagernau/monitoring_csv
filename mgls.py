@@ -8,7 +8,7 @@ from database import crud
 from my_logger import logger
 import config
 
-class GlanassData:
+class GlonassData:
     """
     Класс для работы с API GlanasSoft
     """
@@ -59,19 +59,19 @@ class GlanassData:
                 }
             )
 
-        return data
-
-
-    def list_to_csv(self) -> None:
-        """
-        Формирует CSV файл из json Glanass,  адаптированный под Ромину бд
-        """
-        data = self.get_data()
         for item in data:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["nm"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["nm"])
             item["uid"] = " " + str(item["uid"])
             item["oid"] = str(item["oid"])
+
+        return data
+
+    @staticmethod
+    def data_to_csv(data: typing.List) -> None:
+        """
+        Формирует CSV файл из json Glanass,  адаптированный под Ромину бд
+        """
             
         df = pd.DataFrame(data)
         df =  df[['unm', 'uid', 'nm', 'oid']]
@@ -82,6 +82,10 @@ class GlanassData:
 
         df.to_csv('glonqssoft.csv', index=False)
 
+
+
+    @staticmethod
+    def add_to_db(data: typing.List) -> None:
         list_obj = []
         for i in data:
             list_obj.append(
@@ -95,10 +99,7 @@ class GlanassData:
                     ]
                     )
         #блок логирования успешности добавления объектов
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из glanass добавлены в базу данных")
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из glanass возникла ошибка: {e}")
+        crud.add_objects(list_obj)
 
-
+    def __str__(self) -> str:
+        return str("glonassoft")

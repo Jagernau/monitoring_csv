@@ -5,6 +5,7 @@ import re
 from database import crud
 from my_logger import logger
 import config
+import typing
 
 class WialonData:
     """
@@ -59,11 +60,6 @@ class WialonData:
 
         data = {"objects": units["items"], "users": users["items"]}
 
-
-        return data
-
-    def dict_to_csv(self):
-        data = self.get_data()
         objects = data["objects"]
         users = data["users"]
         for obj in objects:
@@ -81,6 +77,10 @@ class WialonData:
             item["crt"] = str(item["crt"])
             item["id"] = str(item["id"])
 
+        return objects
+
+    @staticmethod
+    def data_to_csv(objects: typing.List) -> None:
 
         df = pd.DataFrame(objects)
         df =  df[['client', 'crt', 'nm', 'id', "act"]]
@@ -90,6 +90,8 @@ class WialonData:
         df.to_csv('wialon.csv', index=False) #сохраняем в csv
 
 
+    @staticmethod
+    def add_to_db(objects: typing.List) -> None:
         #берём нужные даннные выгрузки словаря и превращаем их в list
         list_obj = [] #сам список
         #цикл по словарю для пермещения в list_obj
@@ -105,9 +107,7 @@ class WialonData:
                         i["act"],
                     ]
                     )
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из wialonhost добавлены в базу данных")
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из wialon возникла ошибка: {e}")
+        crud.add_objects(list_obj)
 
+    def __str__(self) -> str:
+        return str("wialon")

@@ -21,7 +21,7 @@ class FortData:
     url_companies_list = str(config.FORT_HOST) + "/api/integration/v1/getcompanieslist"
     url_objects = str(config.FORT_HOST) + "/api/integration/v1/getobjectslist"
 
-    def get_data(self) -> typing.List:
+    def get_data(self):
         """
         Делает выгрузку из системы мониторинга Форт
         """
@@ -55,19 +55,21 @@ class FortData:
                 e["unm"] = el["name"]
                 data.append(e)
 
-        return data
-
-
-    def list_to_csv(self) -> None:
-        """
-        Формирует CSV файл из json Fort, адаптирует под Ромину бд
-        """
-        data = self.get_data()
         for item in data:
             item["unm"] = re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["unm"])
             item["name"] = " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", item["name"])
             item["uid"] = str(item["uid"])
             item["id"] = str(item["id"])
+
+        return data
+        
+
+    @staticmethod
+    def data_to_csv(data: typing.List) -> None:
+        """
+        Формирует CSV файл из json Fort, адаптирует под Ромину бд
+        """
+
         df = pd.DataFrame(data)
         df =  df[['unm', 'uid', 'name', 'id']]
         df['Days Active'] = ' Да'
@@ -76,6 +78,8 @@ class FortData:
 
         df.to_csv('fort.csv', index=False)
 
+    @staticmethod
+    def add_to_db(data: typing.List) -> None:
         list_obj = []
         for i in data:
             list_obj.append(
@@ -88,10 +92,8 @@ class FortData:
                         " Да",
                     ]
                     )
-        try:
-            crud.add_objects(list_obj)
-            logger.info("Объекты из fort добавлены в базу данных")
+        crud.add_objects(list_obj)
             
-        except Exception as e:
-            logger.error(f"В добавлении в базу данных объектов из fort возникла ошибка: {e}")
 
+    def __str__(self) -> str:
+        return str("fort")
