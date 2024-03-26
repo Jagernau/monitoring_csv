@@ -29,13 +29,24 @@ def systems_query():
         try:
             monitoring_system = monitoring_systems[i]()
             data = monitoring_system.get_data()
-            monitoring_system.data_to_csv(data)
-#            monitoring_system.add_to_db(data)
-            logger.info(f"{i} обновлен")
-            accepted_data.append(i)
         except Exception as e:
-            logger.error(f"В обновлении {i} возникла ошибка: {e}")
-        time.sleep(30)
+            logger.error(f"Ошибка при получении данных {i}: {e}")
+        else:
+            logger.info(f"Данные {i} получены.")
+            try:
+                monitoring_system.data_to_csv(data)
+            except Exception as e:
+                logger.error(f"Ошибка при записи данных в файл {i}: {e}")
+            else:
+                logger.info(f"Данные {i} записаны в файл.")
+                accepted_data.append(i)
+            try:
+                monitoring_system.add_to_db(data)
+            except Exception as e:
+                logger.error(f"Ошибка при добавлении данных {i} в базу: {e}")
+            else:
+                logger.info(f"Данные {i} добавлены в базу.")
+
 
     with open(f'{current_time}_all_gets_autosave.csv', mode='w', newline='', encoding='utf-8') as f:
         all_gets_writer = csv.writer(f)
