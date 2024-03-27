@@ -40,12 +40,13 @@ def systems_query():
             else:
                 logger.info(f"Данные {i} записаны в файл.")
                 accepted_data.append(i)
-            try:
-                monitoring_system.add_to_db(data)
-            except Exception as e:
-                logger.error(f"Ошибка при добавлении данных {i} в базу: {e}")
-            else:
-                logger.info(f"Данные {i} добавлены в базу.")
+            # try:
+            #     monitoring_system.add_to_db(data)
+            # except Exception as e:
+            #     logger.error(f"Ошибка при добавлении данных {i} в базу: {e}")
+            # else:
+            #     logger.info(f"Данные {i} добавлены в базу.")
+            time.sleep(10)
 
 
     with open(f'{current_time}_all_gets_autosave.csv', mode='w', newline='', encoding='utf-8') as f:
@@ -64,3 +65,8 @@ def systems_query():
             except Exception as e:
                 logger.error(f"Ошибка при обработке {filename}: {e}.")
 
+schedule.every().day.at(str(config.TIME_ACTIVE)).do(systems_query)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)

@@ -45,7 +45,11 @@ MYSQL_DB_NAME=config.get('MYSQL_DB_NAME')
 MYSQL_PASSWORD=config.get('MYSQL_PASSWORD')
 MYSQL_PORT=config.get('MYSQL_PORT')
 
+# Yandex Disk
 DISK_TOKEN = config.get('DISK_TOKEN')
+
+# Time active
+TIME_ACTIVE = config.get('TIME_ACTIVE')
 
 connection_postgres = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{POSTGRES_PORT}/{POSTGRES_DB_NAME}"
 
