@@ -47,7 +47,7 @@ MYSQL_PORT=envi['MYSQL_PORT']
 DISK_TOKEN=envi['DISK_TOKEN']
 
 # Time active
-TIME_ACTIVE=envi['TIME_ACTIVE']
+TIME_ACTIVE=str(envi['TIME_ACTIVE'])
 
 connection_postgres = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{POSTGRES_PORT}/{POSTGRES_DB_NAME}"
 
