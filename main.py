@@ -64,6 +64,10 @@ def systems_query():
                 logger.error(f"Файл {filename} не существует.")
             except Exception as e:
                 logger.error(f"Ошибка при обработке {filename}: {e}.")
+    try:
+        send_csv_to_yandex(f"{current_time}_all_gets_autosave.csv")
+    except Exception as e:
+        logger.error(f"Ошибка при отправке файла all_gets_autosave: {e}.")
 
 schedule.every().day.at(str(config.TIME_ACTIVE)).do(systems_query)
 
