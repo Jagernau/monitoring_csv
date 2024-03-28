@@ -48,7 +48,7 @@ ENV MYSQL_PORT=${MYSQL_PORT}
 ENV DISK_TOKEN=${DISK_TOKEN}
 
 # Time active
-ENV TIME_ACTIVE=$"{TIME_ACTIVE}"
+ENV TIME_ACTIVE=$TIME_ACTIVE
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
