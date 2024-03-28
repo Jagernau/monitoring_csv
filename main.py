@@ -69,8 +69,11 @@ def systems_query():
     except Exception as e:
         logger.error(f"Ошибка при отправке файла all_gets_autosave: {e}.")
 
-schedule.every().day.at(str(config.TIME_ACTIVE)).do(systems_query)
+# schedule.every().day.at(str(config.TIME_ACTIVE)).do(systems_query)
+#
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+print(f"Время запуска: {str(config.TIME_ACTIVE)}")
+print(f"glonass: {config.GLONASS_HOST}")
