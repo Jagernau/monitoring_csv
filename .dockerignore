@@ -101,3 +101,4 @@ venv/
 log.txt
 install.sh
 Dockerfile
+*install.sh
