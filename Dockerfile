@@ -51,4 +51,5 @@ ENV DISK_TOKEN=${DISK_TOKEN}
 ENV TIME_ACTIVE=$TIME_ACTIVE
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
