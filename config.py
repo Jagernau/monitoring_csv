@@ -37,12 +37,6 @@ POSTGRES_DB_NAME=envi.get('POSTGRES_DB_NAME')
 POSTGRES_PASSWORD=envi.get('POSTGRES_PASSWORD')
 POSTGRES_PORT=envi.get('POSTGRES_PORT')
 
-# MySQL
-MYSQL_USER=envi.get('MYSQL_USER')
-MYSQL_DB_NAME=envi.get('MYSQL_DB_NAME')
-MYSQL_PASSWORD=envi.get('MYSQL_PASSWORD')
-MYSQL_PORT=envi.get('MYSQL_PORT')
-
 # Yandex Disk
 DISK_TOKEN=envi.get.get('DISK_TOKEN')
 
@@ -51,4 +45,3 @@ TIME_ACTIVE=envi.get.get('TIME_ACTIVE')
 
 connection_postgres = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{POSTGRES_PORT}/{POSTGRES_DB_NAME}"
 
-connection_mysql = f"mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASSWORD}@{DB_HOST}:{MYSQL_PORT}/{MYSQL_DB_NAME}"

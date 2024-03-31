@@ -14,12 +14,12 @@ from my_logger import logger
 import config
 
 monitoring_systems = {
-#    "wialon": WialonData,
+    "wialon": WialonData,
     "fort": FortData,
     "glonqssoft": GlonassData,
-#    "scaut": ScautData,
-#   "era": EraData,
-#    "wlocal": WlocalData,
+    "scaut": ScautData,
+    "era": EraData,
+    "wlocal": WlocalData,
 }
 
 def systems_query():
@@ -40,12 +40,6 @@ def systems_query():
             else:
                 logger.info(f"Данные {i} записаны в файл.")
                 accepted_data.append(i)
-            # try:
-            #     monitoring_system.add_to_db(data)
-            # except Exception as e:
-            #     logger.error(f"Ошибка при добавлении данных {i} в базу: {e}")
-            # else:
-            #     logger.info(f"Данные {i} добавлены в базу.")
             time.sleep(10)
 
 
