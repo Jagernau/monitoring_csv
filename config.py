@@ -38,10 +38,10 @@ POSTGRES_PASSWORD=envi.get('POSTGRES_PASSWORD')
 POSTGRES_PORT=envi.get('POSTGRES_PORT')
 
 # Yandex Disk
-DISK_TOKEN=envi.get.get('DISK_TOKEN')
+DISK_TOKEN=str(envi.get('DISK_TOKEN'))
 
 # Time active
-TIME_ACTIVE=envi.get.get('TIME_ACTIVE')
+TIME_ACTIVE=str(envi.get('TIME_ACTIVE'))
 
 connection_postgres = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{POSTGRES_PORT}/{POSTGRES_DB_NAME}"
 
