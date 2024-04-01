@@ -88,38 +88,19 @@ fi
 
 echo "${GREEN}Первичная установка завершена${NC}"
 
-mkdir simple_data_collector
+mkdir data_base_postgres
 
-cd simple_data_collector
+cd data_base_postgres
 
 # Создание файла .env
 touch .env
 
 env_lines=(
 
-    "WIALON_HOST=hst-api.wialon.com" # по умолчанию
-    "WIALON_TOKEN="
-    "FORT_HOST="
-    "FORT_LOGIN="
-    "FORT_PASSWORD="
-    "GLONASS_HOST=https://hosting.glonasssoft.ru" # по умолчанию
-    "GLONASS_LOGIN="
-    "GLONASS_PASSWORD="
-    "SCAUT_HOST=" #c http и портом
-    "SCAUT_LOGIN="
-    "SCAUT_PASSWORD="
-    "ERA_HOST=monitoring.aoglonass.ru" # по умолчанию
-    "ERA_LOGIN="
-    "ERA_PASSWORD="
-    "WIALON_LOCAL_HOST=" # свой или наш, написание без http и порта
-    "WIALON_LOCAL_TOKEN="
-    "DISK_TOKEN="
-    "DB_HOST=" # хостинг базы данных
     "POSTGRES_USER="
     "POSTGRES_DB_NAME="
     "POSTGRES_PASSWORD="
     "POSTGRES_PORT="
-    "TIME_ACTIVE=" # типа 10:00
 )
 # Запись строк в файл .env
 for line in "${env_lines[@]}"; do
@@ -129,3 +110,43 @@ done
 echo "Файл .env создан успешно!"
 nvim .env
 
+cat > docker-compose.yaml << EOF
+version: '3.8'
+networks:
+  postgres_db:
+    driver: bridge
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_NAME} 
+      ENCODING: 'UTF8'
+      LC_COLLATE: 'C.UTF-8'
+      LC_CTYPE: 'C.UTF-8'
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    command: postgres -c 'max_connections=300'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    restart: always
+    networks:
+      - postgres_db
+
+volumes:
+  db_data
+EOF
+echo "Файл docker-compose.yaml создан успешно!"
+sudo docker-compose --env-file .env up -d
+echo "Сервер базы данных PostgreSQL успешно запущен!"
+# вывести имя контейнера postgres
+sudo docker ps
