@@ -100,6 +100,46 @@ POSTGRES_PASSWORD=
 POSTGRES_PORT=
 EOF
 
+#!/bin/bash
+
+# Проверка установки Neovim и вывод версии
+if command -v nvim &> /dev/null
+then
+    echo "Neovim установлен. Версия:"
+    nvim --version | head -n 1
+else
+    echo "Neovim не установлен. Установка..."
+    
+    # Установка Neovim на Ubuntu и Debian
+    if command -v apt &> /dev/null
+    then
+        sudo apt update
+        sudo apt install neovim
+    fi
+
+    # Установка Neovim на Manjaro и Arch Linux
+    if command -v pacman &> /dev/null
+    then
+        sudo pacman -Syu neovim
+    fi
+
+    # Установка Neovim на Fedora
+    if command -v dnf &> /dev/null
+    then
+        sudo dnf install -y neovim
+    fi
+
+    # Установка Neovim через Flatpak
+    flatpak install flathub io.neovim.nvim
+
+    # Установка Neovim через Snap
+    sudo snap install nvim --classic
+
+    echo "Neovim успешно установлен."
+fi
+
+neovim .env
+
 cat > docker-compose.yaml << EOF
 version: '3.8'
 networks:
