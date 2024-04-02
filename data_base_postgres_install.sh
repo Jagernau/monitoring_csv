@@ -138,7 +138,7 @@ else
     echo "Neovim успешно установлен."
 fi
 
-neovim .env
+nvim .env
 
 cat > docker-compose.yaml << EOF
 version: '3.8'
