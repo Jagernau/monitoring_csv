@@ -140,7 +140,7 @@ fi
 
 nvim .env
 
-cat > docker-compose.yaml << EOF
+cat > docker-compose.yaml << 'EOF'
 version: '3.8'
 networks:
   postgres_db:
@@ -175,6 +175,7 @@ services:
 volumes:
   db_data:
 EOF
+
 echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up -d
 echo "Сервер базы данных PostgreSQL успешно запущен!"
