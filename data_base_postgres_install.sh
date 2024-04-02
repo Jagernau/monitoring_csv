@@ -106,7 +106,7 @@ env_lines=(
 for line in "${env_lines[@]}"; do
     echo "$line" >> .env
 done
-
+sudo apt install neovim
 echo "Файл .env создан успешно!"
 nvim .env
 
