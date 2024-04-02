@@ -93,22 +93,12 @@ mkdir data_base_postgres
 cd data_base_postgres
 
 # Создание файла .env
-touch .env
-
-env_lines=(
-
-    "POSTGRES_USER="
-    "POSTGRES_DB_NAME="
-    "POSTGRES_PASSWORD="
-    "POSTGRES_PORT="
-)
-# Запись строк в файл .env
-for line in "${env_lines[@]}"; do
-    echo "$line" >> .env
-done
-sudo apt install neovim
-echo "Файл .env создан успешно!"
-nvim .env
+cat > .env << EOF
+POSTGRES_USER=
+POSTGRES_DB_NAME=
+POSTGRES_PASSWORD=
+POSTGRES_PORT=
+EOF
 
 cat > docker-compose.yaml << EOF
 version: '3.8'
