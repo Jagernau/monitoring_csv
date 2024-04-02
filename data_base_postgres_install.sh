@@ -173,7 +173,7 @@ services:
       - postgres_db
 
 volumes:
-  db_data
+  db_data:
 EOF
 echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up -d
