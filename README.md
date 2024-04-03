@@ -31,7 +31,7 @@ https://Адрес виалона хостинга либо локала/login.h
 ## Как запустить Базу данных на postgres в контейнере docker-compose  если таковой нигде не сущестует.
 #### Это контейнер БД подходящий под программу собирания данных
 Если понадобится создать базу данных Postgres и в ней создать таблицы с нужными названиями. Все секреты по базе данных будут хранится в файле .env
-1. Запустить скрипт `curl -s https://raw.githubusercontent.com/Jagernau/monitoring_csv/simple_data_collector/data_base_postgres_install.sh`
+1. Запустить скрипт `curl -s https://raw.githubusercontent.com/Jagernau/monitoring_csv/simple_data_collector/data_base_postgres_install.sh | sh`
 Всё происходит автоматически:
 * Пройдёт проверка установлен ли docker.
 * Пройдёт проверка установлен ли docker-compose.
