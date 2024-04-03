@@ -172,6 +172,20 @@ services:
     networks:
       - postgres_db
 
+  migrate_db:
+    image: jagernau/monitoringdb:migrate_db
+    depends_on:
+      - db
+    networks:
+      - postgres_db
+
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
+
+    command: python create_tables.py
+
 volumes:
   db_data:
 EOF
@@ -180,7 +194,4 @@ echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up -d
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 # вывести имя контейнера postgres
-sudo docker ps
-
-sudo docker run --env-file .env -it jagernau/monitoringdb:migrate_db python create_tables.py
 
