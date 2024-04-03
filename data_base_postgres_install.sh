@@ -191,7 +191,7 @@ volumes:
 EOF
 
 echo "Файл docker-compose.yaml создан успешно!"
-sudo docker-compose --env-file .env up -d
+sudo docker-compose --env-file .env up
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 # вывести имя контейнера postgres
 
