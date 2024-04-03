@@ -182,5 +182,5 @@ echo "${GREEN}Сервер базы данных PostgreSQL успешно за�
 # вывести имя контейнера postgres
 sudo docker ps
 
-docker run --env-file .env -it jagernau/monitoringdb:migrate_db python create_tables.py
+sudo docker run --env-file .env -it jagernau/monitoringdb:migrate_db python create_tables.py
 
