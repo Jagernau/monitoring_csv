@@ -4,9 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-import sys
-sys.path.append('../')
-from monitoring_db_autosave import config
+import config
 
 
 class PostgresDatabase: 
