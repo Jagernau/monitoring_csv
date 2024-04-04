@@ -1,15 +1,7 @@
-# from postgres_models import *
-# from bd_conectors import  PostgresDatabase as pgdb
-#
-# postgres_db = pgdb()
-#
-# postgres_db.BASE.metadata.create_all(postgres_db.engine)
-#
+from postgres_models import *
+from bd_conectors import  PostgresDatabase as pgdb
 
-import config
+postgres_db = pgdb()
 
-print(f"---{config.DB_HOST}---")
-print(f"---{config.POSTGRES_USER}---")
-print(f"---{config.POSTGRES_DB_NAME}---")
-print(f"---{config.POSTGRES_PASSWORD}---")
+postgres_db.BASE.metadata.create_all(postgres_db.engine)
 
