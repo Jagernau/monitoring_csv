@@ -8,7 +8,6 @@ ENV DB_HOST="localhost"
 ENV POSTGRES_USER=${POSTGRES_USER}
 ENV POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
 ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-ENV POSTGRES_PORT=5432
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
