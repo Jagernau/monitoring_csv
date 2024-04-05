@@ -1,8 +1,11 @@
-from sqlalchemy import BigInteger, Boolean, CheckConstraint, Column, DateTime, ForeignKey, Identity, Integer, Numeric, SmallInteger, String, Table, Text, UniqueConstraint, text
+from sqlalchemy import BigInteger, Boolean, CheckConstraint, Column, DateTime, ForeignKey, Identity, Integer, Numeric, SmallInteger, String, Table, Text, UniqueConstraint, text, create_engine
 from sqlalchemy.orm import declarative_base, relationship
+import config
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 metadata = Base.metadata
+engine = create_engine(str(config.connection_postgres))
 
 
 class AuthGroup(Base):
@@ -276,3 +279,4 @@ class AuthUserUserPermissions(Base):
 
     permission = relationship('AuthPermission', back_populates='auth_user_user_permissions')
     user = relationship('AuthUser', back_populates='auth_user_user_permissions')
+
