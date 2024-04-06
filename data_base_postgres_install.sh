@@ -161,28 +161,55 @@ services:
     command: postgres -c 'max_connections=300'
     volumes:
       - db_data:/var/lib/postgresql/data
-
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 30s
       timeout: 5s
       retries: 5
-
     restart: always
     networks:
       - postgres_db
 
-  migrate_db:
-    image: jagernau/monitoringdb:migrate_db
-    depends_on:
-      - db
-    networks:
-      - postgres_db
-
+  migrations:
+    image: jagernau/rest_suntel:latest
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate"
+    networks:
+      - postgres_db
+
+  web:
+    image: jagernau/rest_suntel:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+    volumes:
+      - .:/rest_suntel
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - postgres_db
+    ports:
+      - 8555:8000
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/rest_suntel/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - postgres_db
 
 volumes:
   db_data:
