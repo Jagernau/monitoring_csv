@@ -190,8 +190,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
-    volumes:
-      - .:/rest_suntel
     depends_on:
       db:
         condition: service_healthy
