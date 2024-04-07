@@ -141,9 +141,9 @@ fi
 nvim .env
 
 cat > docker-compose.yaml << 'EOF'
-version: '3.8'
+version: '3.9'
 networks:
-  postgres_db:
+  suntel_network:
     driver: bridge
 
 services:
@@ -152,7 +152,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB_NAME} 
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
       ENCODING: 'UTF8'
       LC_COLLATE: 'C.UTF-8'
       LC_CTYPE: 'C.UTF-8'
@@ -162,41 +162,41 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
-      interval: 30s
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB_NAME}", "-h", "localhost"]
+      interval: 5s
       timeout: 5s
       retries: 5
     restart: always
     networks:
-      - postgres_db
+      - suntel_network
 
   migrations:
     image: jagernau/rest_suntel:latest
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
     depends_on:
       db:
         condition: service_healthy
     command: >
       sh -c "python manage.py migrate"
     networks:
-      - postgres_db
+      - suntel_network
 
   web:
     image: jagernau/rest_suntel:latest
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
     depends_on:
       db:
         condition: service_healthy
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
     networks:
-      - postgres_db
+      - suntel_network
     ports:
       - 8000:8000
 
