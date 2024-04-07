@@ -170,13 +170,42 @@ services:
     networks:
       - postgres_db
 
+  migrations:
+    image: jagernau/rest_suntel:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate"
+    networks:
+      - postgres_db
+
+  web:
+    image: jagernau/rest_suntel:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - postgres_db
+    ports:
+      - 8000:8000
 
 volumes:
   db_data:
 EOF
 
 echo "Файл docker-compose.yaml создан успешно!"
-sudo docker-compose --env-file .env up --build
+sudo docker-compose --env-file .env up
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 # вывести имя контейнера postgres
 
