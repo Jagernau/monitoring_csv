@@ -205,7 +205,8 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx.conf:/rest_suntel/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./rest_suntel:/rest_suntel/nginx.conf
     ports:
       - 80:80
     networks:
