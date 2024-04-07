@@ -157,7 +157,7 @@ services:
       LC_COLLATE: 'C.UTF-8'
       LC_CTYPE: 'C.UTF-8'
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5432:5432"
     command: postgres -c 'max_connections=300'
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -170,51 +170,13 @@ services:
     networks:
       - postgres_db
 
-  # migrations:
-  #   image: jagernau/rest_suntel:latest
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #     - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: >
-  #     sh -c "python manage.py migrate"
-  #   networks:
-  #     - postgres_db
-  #
-  # web:
-  #   image: jagernau/rest_suntel:latest
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #     - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: >
-  #     sh -c "python manage.py runserver 0.0.0.0:8000"
-  #   networks:
-  #     - postgres_db
-  #   ports:
-  #     - 8555:8000
-
-  # nginx:
-  #   image: nginx:latest
-  #   volumes:
-  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  #   ports:
-  #     - 80:80
-  #   networks:
-  #     - postgres_db
 
 volumes:
   db_data:
 EOF
 
 echo "Файл docker-compose.yaml создан успешно!"
-sudo docker-compose --env-file .env up
+sudo docker-compose --env-file .env up --build
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 # вывести имя контейнера postgres
 
