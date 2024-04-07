@@ -202,14 +202,14 @@ services:
     ports:
       - 8555:8000
 
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 80:80
-    networks:
-      - postgres_db
+  # nginx:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - postgres_db
 
 volumes:
   db_data:
