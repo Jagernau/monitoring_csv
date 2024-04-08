@@ -46,6 +46,10 @@ https://Адрес виалона хостинга либо локала/login.h
 * Скачается и запустится контейнер с БД паролями из .env
     * Посмотреть все файлы в директории `ls -a data_base_postgres`
 * Создаются все необходимые таблицы.
+* Установится Django ЦМС под "ПУКС"
+    * Если потребуется установить пукс просто отдельно на готовую ДБ:
+        * Нужно запустить контейнер `sudo docker run -it --env-file .env jagernau/rest_suntel:latest manage.py runserver 0.0.0.0:8000`, предварительно прописав в созданной директории в файле `.env` секреты: `POSTGRES_PASSWORD=`, `POSTGRES_USER=`, `POSTGRES_DB=`, `POSTGRES_PORT=`, `POSTGRES_HOST=` 
+* В базе данных создаются таблицы с нужными названиями.
 
 Если вдруг понадобится остановить БД пропиши в консоле: `sudo docker-compose -f data_base_postgres/docker-compose.yml down`
 
