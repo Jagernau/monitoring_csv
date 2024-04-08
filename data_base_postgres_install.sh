@@ -157,7 +157,7 @@ services:
       LC_COLLATE: 'C.UTF-8'
       LC_CTYPE: 'C.UTF-8'
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     command: postgres -c 'max_connections=300'
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -176,6 +176,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: db
     depends_on:
       db:
         condition: service_healthy
@@ -190,6 +192,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: db
     depends_on:
       db:
         condition: service_healthy
