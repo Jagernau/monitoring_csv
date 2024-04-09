@@ -170,39 +170,39 @@ services:
     networks:
       - suntel_network
 
-  migrations:
-    image: jagernau/rest_suntel:latest
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
-      POSTGRES_PORT: 5432
-      POSTGRES_HOST: db
-    depends_on:
-      db:
-        condition: service_healthy
-    command: >
-      sh -c "python manage.py migrate"
-    networks:
-      - suntel_network
-
-  web:
-    image: jagernau/rest_suntel:latest
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
-      POSTGRES_PORT: 5432
-      POSTGRES_HOST: db
-    depends_on:
-      db:
-        condition: service_healthy
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
-    networks:
-      - suntel_network
-    ports:
-      - 8000:8000
+  # migrations:
+  #   image: jagernau/rest_suntel:latest
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+  #     POSTGRES_PORT: 5432
+  #     POSTGRES_HOST: db
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   command: >
+  #     sh -c "python manage.py migrate"
+  #   networks:
+  #     - suntel_network
+  #
+  # web:
+  #   image: jagernau/rest_suntel:latest
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+  #     POSTGRES_PORT: 5432
+  #     POSTGRES_HOST: db
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   command: >
+  #     sh -c "python manage.py runserver 0.0.0.0:8000"
+  #   networks:
+  #     - suntel_network
+  #   ports:
+  #     - 8000:8000
 
 volumes:
   db_data:

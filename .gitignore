@@ -161,7 +161,7 @@ cython_debug/
 
 *.json
 !spec/*.json
-*.sql
+
 /files
 *.csv
 *.xlsx
