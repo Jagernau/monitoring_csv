@@ -212,4 +212,5 @@ echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 # вывести имя контейнера postgres
+sudo docker exec -i db psql -U max -d max  -f /home/pgschema_bd.sql
 
