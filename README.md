@@ -51,6 +51,8 @@ https://Адрес виалона хостинга либо локала/login.h
         * Нужно запустить контейнер `sudo docker run -it --env-file .env jagernau/rest_suntel:latest manage.py runserver 0.0.0.0:8000`, предварительно прописав в созданной директории в файле `.env` секреты: `POSTGRES_PASSWORD=`, `POSTGRES_USER=`, `POSTGRES_DB=`, `POSTGRES_PORT=`, `POSTGRES_HOST=` 
 * В базе данных создаются таблицы с нужными названиями.
 
+Также можно накатить резервную копию с данными и продолжить тем самым учёт, но это только через pgadmine. Я к сожалению не могу выложить сюда бэкап с данными.
+
 Если вдруг понадобится остановить БД пропиши в консоле: `sudo docker-compose -f data_base_postgres/docker-compose.yml down`
 
 ## Как установить программу по сбору данных.
