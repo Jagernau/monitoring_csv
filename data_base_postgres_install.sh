@@ -210,4 +210,4 @@ sudo docker cp pgschema_bd.sql data_base_postgres_db_1:/home/pgschema_bd.sql
 sleep 5
 sudo docker exec -i data_base_postgres_db_1 psql -U max -d max --if-exists -f /home/pgschema_bd.sql
 
-#sud docker-compose exec web python manage.py createsuperuser
+sud docker-compose exec web python manage.py createsuperuser
