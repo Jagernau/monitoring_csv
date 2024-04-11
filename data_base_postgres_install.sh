@@ -92,6 +92,7 @@ mkdir data_base_postgres
 
 cd data_base_postgres
 
+curl -LJO https://raw.githubusercontent.com/jagernau/monitoring_csv/simple_data_collector/pgschema_bd.sql
 # Создание файла .env
 cat > .env << EOF
 POSTGRES_USER=
@@ -205,7 +206,6 @@ echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up -d
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
 
-curl -LJO https://raw.githubusercontent.com/jagernau/monitoring_csv/simple_data_collector/pgschema_bd.sql
 
 sudo docker cp pgschema_bd.sql data_base_postgres_db_1:/home/pgschema_bd.sql
 sleep 5
