@@ -170,48 +170,32 @@ services:
     networks:
       - suntel_network
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${POSTGRES_USER}@mail.com
-      PGADMIN_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5010:80"
-
-  # migrations:
-  #   image: jagernau/rest_suntel:latest
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   restart: always
   #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
-  #     POSTGRES_PORT: 5432
-  #     POSTGRES_HOST: db
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: >
-  #     sh -c "python manage.py migrate"
-  #   networks:
-  #     - suntel_network
-  #
-  # web:
-  #   image: jagernau/rest_suntel:latest
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
-  #     POSTGRES_PORT: 5432
-  #     POSTGRES_HOST: db
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: >
-  #     sh -c "python manage.py runserver 0.0.0.0:8000"
-  #   networks:
-  #     - suntel_network
+  #     PGADMIN_DEFAULT_EMAIL: ${POSTGRES_USER}@mail.com
+  #     PGADMIN_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
   #   ports:
-  #     - 8000:8000
+  #     - "5010:80"
+
+  web:
+    image: jagernau/rest_suntel:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - suntel_network
+    ports:
+      - 8000:8000
 
 volumes:
   db_data:
@@ -226,3 +210,4 @@ sudo docker cp pgschema_bd.sql data_base_postgres_db_1:/home/pgschema_bd.sql
 sleep 5
 sudo docker exec -i data_base_postgres_db_1 psql -U max -d max --if-exists -f /home/pgschema_bd.sql
 
+#sud docker-compose exec web python manage.py createsuperuser
