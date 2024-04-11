@@ -204,11 +204,12 @@ EOF
 echo "Файл docker-compose.yaml создан успешно!"
 sudo docker-compose --env-file .env up -d
 echo "${GREEN}Сервер базы данных PostgreSQL успешно запущен!${NC}"
-# вывести имя контейнера postgres
+
 curl -LJO https://raw.githubusercontent.com/jagernau/monitoring_csv/simple_data_collector/pgschema_bd.sql
+
 sudo docker cp pgschema_bd.sql data_base_postgres_db_1:/home/pgschema_bd.sql
 sleep 5
 sudo docker exec -i data_base_postgres_db_1 psql -U max -d max -f /home/pgschema_bd.sql
 
-sud docker-compose exec web python manage.py createsuperuser
+sudo docker-compose exec web python manage.py createsuperuser
 
