@@ -209,7 +209,7 @@ echo "${GREEN}Сервер базы данных PostgreSQL успешно за�
 
 sudo docker cp pgschema_bd.sql db:/home/pgschema_bd.sql
 sleep 5
-sudo docker exec -i db psql -U max -d max -f /home/pgschema_bd.sql
+sudo docker-compose exec db psql -U max -d max -f /home/pgschema_bd.sql
 
-sudo docker-compose  exec -i web python manage.py createsuperuser
+sudo docker-compose  exec  web python manage.py createsuperuser
 
