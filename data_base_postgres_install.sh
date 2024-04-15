@@ -231,8 +231,8 @@ sudo docker cp pgschema_bd.sql db:/home/pgschema_bd.sql
 sleep 5
 sudo docker exec -i data_base_postgres_db_1 psql -U max -d max -f /home/pgschema_bd.sql
 
-sudo docker-compose --env-file .env exec web python manage.py migrate
-
-source .env
-docker-compose exec -T web python manage.py createsuperuser --noinput --email "${POSTGRES_USER}@mail.ru" --username "${POSTGRES_USER}_${POSTGRES_USER}" --password "${POSTGRES_USER}_${POSTGRES_PORT}"
-
+# sudo docker --env-file .env exec data_base_postgres_web_1 python manage.py migrate
+#
+# source .env
+# docker-compose exec -T web python manage.py createsuperuser --noinput --email "${POSTGRES_USER}@mail.ru" --username "${POSTGRES_USER}_${POSTGRES_USER}" --password "${POSTGRES_USER}_${POSTGRES_PORT}"
+#
