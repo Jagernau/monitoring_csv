@@ -213,6 +213,5 @@ sudo docker exec -i data_base_postgres_db_1 psql -U max -d max -f /home/pgschema
 
 sudo docker-compose --env-file .env exec web python manage.py migrate
 
-
 source .env
 docker-compose exec -T web python manage.py createsuperuser --noinput --email "${POSTGRES_USER}@mail.ru" --username "${POSTGRES_USER}_${POSTGRES_USER}" --password "${POSTGRES_USER}_${POSTGRES_PORT}"
