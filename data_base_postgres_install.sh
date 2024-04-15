@@ -141,6 +141,26 @@ fi
 
 nvim .env
 
+cat > nginx.conf << 'EOF'
+worker_processes 1;
+
+events { worker_connections 1024; }
+
+http {
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            proxy_pass http://web:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+}
+EOF
+
 cat > docker-compose.yaml << 'EOF'
 version: '3.9'
 networks:
@@ -171,15 +191,6 @@ services:
     networks:
       - suntel_network
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:latest
-  #   restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${POSTGRES_USER}@mail.com
-  #     PGADMIN_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
-  #   ports:
-  #     - "5010:80"
-
   web:
     image: jagernau/rest_suntel:latest
     environment:
@@ -198,6 +209,15 @@ services:
     ports:
       - 8000:8000
 
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - suntel_network
+
 volumes:
   db_data:
 EOF
@@ -215,3 +235,4 @@ sudo docker-compose --env-file .env exec web python manage.py migrate
 
 source .env
 docker-compose exec -T web python manage.py createsuperuser --noinput --email "${POSTGRES_USER}@mail.ru" --username "${POSTGRES_USER}_${POSTGRES_USER}" --password "${POSTGRES_USER}_${POSTGRES_PORT}"
+
