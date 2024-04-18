@@ -229,7 +229,7 @@ echo "${GREEN}Сервер базы данных PostgreSQL успешно за�
 
 sudo docker cp pgschema_bd.sql data_base_postgres_db_1:/home/pgschema_bd.sql
 sleep 5
-source .env
+.env
 sudo docker exec -i data_base_postgres_db_1 psql -U $POSTGRES_USER -d $POSTGRES_DB_NAME -f /home/pgschema_bd.sql
 
 # sudo docker --env-file .env exec data_base_postgres_web_1 python manage.py migrate
