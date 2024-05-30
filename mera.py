@@ -13,7 +13,8 @@ from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 
 from params import presp
-
+import ssl
+from thrift.transport import TSSLSocket
 
 class EraData:
 
@@ -27,6 +28,10 @@ class EraData:
 
     def __conn(self):
 
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+
         url_base = self.params['15']['url_base']
         url_port = self.params['15']['url_port']
         login = self.params['15']['params']['login']
@@ -34,7 +39,7 @@ class EraData:
         long_session = self.params['15']['long_session']
 
         # Подключить сокет
-        transport = TSocket.TSocket(url_base, url_port)
+        transport = TSSLSocket.TSSLSocket(url_base, url_port, ssl_context=ssl_context)
         transport = TTransport.TFramedTransport(transport)
         # Получить TBinaryProtocol
         protocol = TBinaryProtocol.TBinaryProtocol(transport)

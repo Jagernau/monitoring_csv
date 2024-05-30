@@ -134,7 +134,7 @@ def presp():
                 "lang": "ru-ru",
                 "timezone": "+3",
             },
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/connect",
         },
         "1201": {
@@ -144,7 +144,7 @@ def presp():
                 "Accept": "application/json",
             },
             "payload": {"SessionId": "_replace", "companyId": 0},
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/getcompanieslist",
         },
         "1202": {
@@ -154,7 +154,7 @@ def presp():
                 "Accept": "application/json",
             },
             "payload": {"SessionId": "_replace", "companyId": 0},
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/getobjectslist",
         },
         "13": {
