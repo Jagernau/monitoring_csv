@@ -4,6 +4,7 @@ import typing
 import pandas as pd
 import re
 import new_config
+import json
 
 class ScoutTreeData:
 
@@ -65,20 +66,31 @@ class ScoutTreeData:
         response_groups_with_objects = requests.get(url_groups_with_objects, headers=headers)
         groups_with_objects = response_groups_with_objects.json()
 
+
+        # Удаляем группу Сантел
+        for group in groups_with_objects:
+            if group["id"] == 3668:
+                groups_with_objects.remove(group)
+
         result = []
         for i in available_objects:
             for j in groups_with_objects:
-                if j["id"] == 3668:
-                    continue
                 if i["id"] in j["unitIds"]:
+
                     result.append(
-                            f"объект {i['name']} - группа {j['groupName']}"
+                            f"объект {i['name']} {i['id']} - группа {j['groupName']} {j['id']}\n"
                             )
 
-        print(result)
+        #save to txt
+        with open('scout_365_data.txt', 'w', encoding='utf-8') as f:
+            f.write('\n'.join(result))
+
+        return [available_objects, groups_and_parents, groups_with_objects]
 
 
 scout_tree = ScoutTreeData()
-
-scout_tree.conn()
+data = scout_tree.conn()
+# save to json
+with open('scout_365_data.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
 
