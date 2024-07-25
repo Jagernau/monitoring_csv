@@ -37,13 +37,48 @@ class ScoutTreeData:
         else:
             return None
 
-    def __conn(self):
+    def conn(self):
         """
         Делает выгрузку из системы мониторинга ScoutTree
         """
+        url_available_objects = f"{self.url_base}v3/units/units-previews"
+        url_groups_and_parents = f"{self.url_base}v3/units/scope-with-parents"
+        url_groups_with_objects = f"{self.url_base}v3/units/unit-group-ids"
 
+        token = self.__token()
+
+        headers = {
+            "Content-Type": "application/json, text/json",
+            "Authorization": f"Bearer {token}",
+        }
+
+        # Все доступные объекты
+        # Так как нет лицензии, приходится использовать этот метод
+        response_available_objects = requests.get(url_available_objects, headers=headers)
+        available_objects = response_available_objects.json()
         
+        # Группы и родители
+        response_groups_and_parents = requests.get(url_groups_and_parents, headers=headers)
+        groups_and_parents = response_groups_and_parents.json()
+
+        # Группы с объектами
+        response_groups_with_objects = requests.get(url_groups_with_objects, headers=headers)
+        groups_with_objects = response_groups_with_objects.json()
+
+        result = []
+        for i in available_objects:
+            for j in groups_with_objects:
+                if j["id"] == 3668:
+                    continue
+                if i["id"] in j["unitIds"]:
+                    result.append(
+                            f"объект {i['name']} - группа {j['groupName']}"
+                            )
+
+        print(result)
 
 
+scout_tree = ScoutTreeData()
 
+scout_tree.conn()
 
