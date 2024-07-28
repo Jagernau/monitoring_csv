@@ -26,20 +26,27 @@
 установить пакеты: `pip install -r requirements.txt`
 создать файл .env с паролями:
 ```
-11_CID=
-11_TOKEN=
-12_LOGIN=
-12_PASSWORD=
-13_LOGIN=
-13_PASSWORD=
-14_URL=
-14_LOGIN=
-14_PASSWORD=
-15_PORT=
-15_LOGIN=
-15_PASSWORD=
-16_CID=
-16_TOKEN=
+11_CID="" # оставим пустым
+11_TOKEN= <токен> Whosting
+12_LOGIN= <логин> Fort
+12_PASSWORD= <пароль> Fort
+13_LOGIN= <логин> Gsoft
+13_PASSWORD= <пароль> Gsoft
+14_URL= <адрес> Скаут
+14_LOGIN= <логин> Скаут
+14_PASSWORD= <пароль> Скаут
+15_PORT= <порт> Era
+15_LOGIN= <логин> Era
+15_PASSWORD= <пароль> Era
+16_CID="" # оставим пустым
+16_TOKEN= <токен> Wlocal
+
+DISK_TOKEN= <токен> YandexDisk
+
+17_SCOUT_365_LOGIN= <логин> Scout_365
+17_SCOUT_365_PASSWORD= <пароль> Scout_365
+17_SCOUT_365_URL= <адрес> Scout_365
+17_SCOUT_365_BASED_TOKEN= <базовый токен, искать в документах> Scout_365
 ```
 Запустить: `python main.py`
 

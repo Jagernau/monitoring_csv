@@ -9,6 +9,7 @@ from mgls import GlanassData
 from mspic import ScautData
 from mera import EraData
 from mwlnl import WlocalData
+from mscout_tree import ScoutTreeData
 import logging
 
 from send_to_yandex import send_csv_to_yandex
@@ -84,6 +85,13 @@ def job():
 
     time.sleep(30)
 
+    try:
+        scout_tree = ScoutTreeData()
+        scout_tree.list_to_csv()
+        logger.info("ScoutTree успешно обновлен")
+    except Exception as e:
+        logger.error(f"В обновлении ScoutTree возникла ошибка: {e}")
+
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     try:
@@ -122,6 +130,11 @@ def job():
                 six_get_reader = csv.reader(six_get_file)
                 next(six_get_reader)
                 all_gets_writer.writerows(six_get_reader)
+
+            with open('scout_tree.csv', mode='r', encoding='utf-8') as seven_get_file:
+                seven_get_reader = csv.reader(seven_get_file)
+                next(seven_get_reader)
+                all_gets_writer.writerows(seven_get_reader)
 
         logger.info("Все данные успешно обновлены и записаны в csv")
     except Exception as e:

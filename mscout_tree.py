@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import new_config
 import json
+import help_funcs
 
 class ScoutTreeData:
 
@@ -38,7 +39,7 @@ class ScoutTreeData:
         else:
             return None
 
-    def conn(self):
+    def __conn(self):
         """
         Делает выгрузку из системы мониторинга ScoutTree
         """
@@ -73,24 +74,36 @@ class ScoutTreeData:
                 groups_with_objects.remove(group)
 
         result = []
+        # объекты
         for i in available_objects:
+            # группы
             for j in groups_with_objects:
                 if i["id"] in j["unitIds"]:
 
-                    result.append(
-                            f"объект {i['name']} {i['id']} - группа {j['groupName']} {j['id']}\n"
-                            )
+                    # Находимируемся по дереву и ищем самую дочернюю
+                    deepest_group = help_funcs.find_child_group(groups_and_parents, j["id"])
+                    # Если нет дочерних групп, то это самая дочерняя
+                    # Исключаем Родителей
+                    # Если у подразделения есть дочернее подразделение, но объект находится в родительской, программа не увидит объект
+                    if deepest_group is None:
 
-        #save to txt
-        with open('scout_365_data.txt', 'w', encoding='utf-8') as f:
-            f.write('\n'.join(result))
+                        result.append([
+                                re.sub("[^0-9a-zA-ZА-я-_]+", " ", j["groupName"]), # Имя группы
+                                " " + str(j["id"]), # Группа ID
+                                " 17", # Мониторинг система ID
+                                " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", i["name"]), # Объект имя
+                                " " + str(i["id"]), # Объект ID
+                                " Да", # Активность
+                                ])
+        return result
 
-        return [available_objects, groups_and_parents, groups_with_objects]
 
+    def list_to_csv(self):
+        data = self.__conn()
+        df = pd.DataFrame(data)
+        df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
+        df.to_csv('scout_tree.csv', index=False)
 
-scout_tree = ScoutTreeData()
-data = scout_tree.conn()
-# save to json
-with open('scout_365_data.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=4)
+# scout_tree = ScoutTreeData()
+# scout_tree.list_to_csv()
 
