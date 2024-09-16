@@ -19,7 +19,7 @@ def presp():
             "WialonSdk": {
                 "is_development": True,
                 "scheme": "https",
-                "host": "hst-api.wialon.com",
+                "host": "hst-api.wialon.host",
                 "port": 0,
                 "session_id": "",
                 "extra_params": "",

@@ -104,6 +104,6 @@ class ScoutTreeData:
         df.columns = ['Учётка', 'ID Учётки', 'ID Системы', 'Имя объекта', 'ID Объекта', "Активность"]
         df.to_csv('scout_tree.csv', index=False)
 
-# scout_tree = ScoutTreeData()
+#scout_tree = ScoutTreeData()
 # scout_tree.list_to_csv()
 
