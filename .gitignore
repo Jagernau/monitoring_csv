@@ -174,3 +174,5 @@ scout_365_data.json
 scout_365_data.txt
 scout_365_data.*
 old_log.txt
+*_log.txt
+*log.txt

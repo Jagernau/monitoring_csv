@@ -19,7 +19,7 @@ logger.setLevel(logging.INFO)
 
 
 # Создание обработчика для записи в файл
-file_handler = logging.FileHandler('log.txt')
+file_handler = logging.FileHandler('new_log.txt')
 file_handler.setLevel(logging.INFO)
 
 
@@ -148,8 +148,7 @@ def job():
     except Exception as e:
         logger.error(f"В отправке данных возникла ошибка: {e}")
 
-# Задаем время выполнения скрипта
-schedule.every().day.at("07:20").do(job)
+schedule.every().day.at("04:20").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()
