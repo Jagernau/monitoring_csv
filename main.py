@@ -121,7 +121,7 @@ def job():
 
 
 # Задаем время выполнения скрипта
-schedule.every().day.at("02:10").do(job)
+schedule.every().day.at("23:10").do(job)
 # Бесконечный цикл для выполнения заданий
 while True:
     schedule.run_pending()
