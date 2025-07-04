@@ -10,6 +10,9 @@ from thrift.protocol import TBinaryProtocol
 from database import crud
 from my_logger import logger
 import config
+import ssl
+from thrift.transport import TSSLSocket
+
 
 class EraData:
 
@@ -18,8 +21,12 @@ class EraData:
 
         objects = []
 
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+
         # Подключить сокет
-        transport = TSocket.TSocket(str(config.ERA_HOST), 19990)
+        transport = TSSLSocket.TSSLSocket(str(config.ERA_HOST), 19991, ssl_context=ssl_context)
         transport = TTransport.TFramedTransport(transport)
         # Получить TBinaryProtocol
         protocol = TBinaryProtocol.TBinaryProtocol(transport)

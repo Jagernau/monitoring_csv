@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 import sys
 sys.path.append('../')
-from monitoring_db_autosave import config
+from monitoring_csv import config
 
 
 class PostgresDatabase: 
