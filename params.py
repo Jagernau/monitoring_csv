@@ -19,10 +19,10 @@ def presp():
             "WialonSdk": {
                 "is_development": True,
                 "scheme": "https",
-                "host": "hst-api.wialon.com",
+                "host": "hst-api.wialon.host",
                 "port": 0,
                 "session_id": "",
-                "extra_params": "",
+                "extra_params": {},
             },
             "cid": os.getenv("11_CID"),
             "token": os.getenv("11_TOKEN"),
@@ -76,7 +76,7 @@ def presp():
                 "host": "suntel-wialon.ru",
                 "port": 0,
                 "session_id": "",
-                "extra_params": "",  # {}
+                "extra_params": {},  # {}
             },
             "cid": os.getenv("16_CID"),
             "token": os.getenv("16_TOKEN"),
@@ -134,7 +134,7 @@ def presp():
                 "lang": "ru-ru",
                 "timezone": "+3",
             },
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/connect",
         },
         "1201": {
@@ -144,7 +144,7 @@ def presp():
                 "Accept": "application/json",
             },
             "payload": {"SessionId": "_replace", "companyId": 0},
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/getcompanieslist",
         },
         "1202": {
@@ -154,7 +154,7 @@ def presp():
                 "Accept": "application/json",
             },
             "payload": {"SessionId": "_replace", "companyId": 0},
-            "url_base": "https://fm.suntel-nn.ru",
+            "url_base": "http://fm.suntel-nn.ru",
             "api_cmd": "/api/integration/v1/getobjectslist",
         },
         "13": {

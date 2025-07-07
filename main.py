@@ -9,6 +9,7 @@ from mgls import GlanassData
 from mspic import ScautData
 from mera import EraData
 from mwlnl import WlocalData
+from mscout_tree import ScoutTreeData
 from send_to_yandex import send_csv_to_yandex
 from my_logger import logger
 
@@ -66,6 +67,13 @@ def job():
     except Exception as e:
         logger.error(f"В обновлении Wlocal возникла ошибка: {e}")
 
+    try:
+        scout_tree = ScoutTreeData()
+        scout_tree.dict_to_csv()
+        logger.info("Scout_365 успешно обновлен")
+    except Exception as e:
+        logger.error(f"В обновлении Scout_365 возникла ошибка: {e}")
+
     time.sleep(30)
 
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -107,6 +115,11 @@ def job():
                 next(six_get_reader)
                 all_gets_writer.writerows(six_get_reader)
 
+            with open('scout_tree.csv', mode='r', encoding='utf-8') as seven_get_file:
+                seven_get_reader = csv.reader(seven_get_file)
+                next(seven_get_reader)
+                all_gets_writer.writerows(seven_get_reader)
+
         logger.info("Все данные успешно обновлены и записаны в csv")
     except Exception as e:
         logger.error(f"В обновлении данных возникла и запись в csv возникла ошибка: {e}")
@@ -120,10 +133,12 @@ def job():
         logger.error(f"В отправке данных возникла ошибка: {e}")
 
 
-# Задаем время выполнения скрипта
-schedule.every().day.at("23:10").do(job)
-# Бесконечный цикл для выполнения заданий
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+job()
 
+# # Задаем время выполнения скрипта
+# schedule.every().day.at("23:10").do(job)
+# # Бесконечный цикл для выполнения заданий
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
+#
