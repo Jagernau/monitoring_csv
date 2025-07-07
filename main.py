@@ -69,7 +69,7 @@ def job():
 
     try:
         scout_tree = ScoutTreeData()
-        scout_tree.dict_to_csv()
+        scout_tree.list_to_csv()
         logger.info("Scout_365 успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Scout_365 возникла ошибка: {e}")
