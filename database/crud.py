@@ -20,13 +20,19 @@ def get_last_pg_id_database():
 
 
 def add_objects(marge_data: list):
-    current_datetime = datetime.datetime.now()
-    today = current_datetime.date()  # Получаем только дату без времени
+    
+    current_date = datetime.datetime.now()
+    current_month = current_date.month
+    current_day = current_date.day
+    current_year = current_date.year
+
+    today = f"{current_month}.{current_day}.{current_year} 1:40"
     session = pgdb().session
     
     # Проверяем существование записей за сегодняшнюю дату
     existing = session.query(pgmodels.Tdata).filter(
-        cast(pgmodels.Tdata.dimport, Date) == today
+        pgmodels.Tdata.dimport == today,
+        pgmodels.Tdata.idsystem == marge_data[0][2]
     ).first()
     
     if existing:
@@ -34,11 +40,9 @@ def add_objects(marge_data: list):
         session.close()
         return
     
-    last_id = int(get_last_pg_id_database()[0])
-    full_dimport = current_datetime  # Используем текущую дату и время
+    full_dimport = today  # Используем текущую дату и время
     
     for i in marge_data:
-        last_id += 1
         objects_data = pgmodels.Tdata(
             login=i[0],
             idlogin=i[1],
@@ -49,10 +53,12 @@ def add_objects(marge_data: list):
             dimport=full_dimport
         )
         session.add(objects_data)
-    
+
+    print(today, marge_data[0][2])
     session.commit()
     session.close()
     my_logger.logger.info(f"Успешно добавлено {len(marge_data)} записей за {today}")
+
 
 # def add_objects(marge_data: list):
 #     current_date = datetime.datetime.now()
