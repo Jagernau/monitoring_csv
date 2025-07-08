@@ -10,7 +10,7 @@ from datetime import date
 
 import sys
 sys.path.append('../')
-from monitoring_db_autosave import my_logger
+from monitoring_csv import my_logger
 
 def get_last_pg_id_database():
     session = pgdb().session
@@ -36,7 +36,7 @@ def add_objects(marge_data: list):
     ).first()
     
     if existing:
-        my_logger.logger.info(f"Данные за {today} уже загружены, пропускаем добавление")
+        my_logger.logger.info(f"Данные за {today} уже загружены, образец {existing}, пропускаем добавление")
         session.close()
         return
     
@@ -54,10 +54,10 @@ def add_objects(marge_data: list):
         )
         session.add(objects_data)
 
-    print(today, marge_data[0][2])
+    # print(today, marge_data[0][2])
     session.commit()
     session.close()
-    my_logger.logger.info(f"Успешно добавлено {len(marge_data)} записей за {today}")
+    my_logger.logger.info(f"Успешно добавлено {len(marge_data)} записей за {today}, образец {existing}")
 
 
 # def add_objects(marge_data: list):
