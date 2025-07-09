@@ -108,7 +108,7 @@ class GlanassData:
         #блок логирования успешности добавления объектов
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из glanass добавлены в базу данных")
+            logger.info("Объекты из glanass закончили соединение с базой данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из glanass возникла ошибка: {e}")
 

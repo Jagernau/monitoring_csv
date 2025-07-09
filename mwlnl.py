@@ -86,7 +86,7 @@ class WlocalData:
                     )
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из wlocal добавлены в базу данных")
+            logger.info("Объекты из wlocal закончили соединение с базой данных")
 
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из wlocal возникла ошибка: {e}")

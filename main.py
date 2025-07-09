@@ -133,12 +133,11 @@ def job():
         logger.error(f"В отправке данных возникла ошибка: {e}")
 
 
-job()
 
-# # Задаем время выполнения скрипта
-# schedule.every().day.at("23:10").do(job)
-# # Бесконечный цикл для выполнения заданий
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
-#
+# Задаем время выполнения скрипта
+schedule.every().day.at("23:11").do(job)
+# Бесконечный цикл для выполнения заданий
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+

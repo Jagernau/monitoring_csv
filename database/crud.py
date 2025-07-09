@@ -36,7 +36,7 @@ def add_objects(marge_data: list):
     ).first()
     
     if existing:
-        my_logger.logger.info(f"Данные за {today} уже загружены, образец {existing}, пропускаем добавление")
+        my_logger.logger.error(f"Данные за {today} уже загружены, пропускаем добавление")
         session.close()
         return
     
@@ -57,7 +57,7 @@ def add_objects(marge_data: list):
     # print(today, marge_data[0][2])
     session.commit()
     session.close()
-    my_logger.logger.info(f"Успешно добавлено {len(marge_data)} записей за {today}, образец {existing}")
+    my_logger.logger.info(f"Успешно добавлено {len(marge_data)} записей за {today}.")
 
 
 # def add_objects(marge_data: list):

@@ -119,7 +119,7 @@ class ScoutTreeData:
         #блок логирования успешности добавления объектов
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из scout_tree добавлены в базу данных")
+            logger.info("Объекты из scout_tree закончили соединение с базой данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из scout_tree возникла ошибка: {e}")
 

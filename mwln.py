@@ -91,7 +91,7 @@ class WialonData:
                     )
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из wialonhost добавлены в базу данных")
+            logger.info("Объекты из wialonhost закончили соединение с базой данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из wialon возникла ошибка: {e}")
 

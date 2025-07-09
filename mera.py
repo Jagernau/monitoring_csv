@@ -116,7 +116,7 @@ class EraData:
 
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из Era добавлены в базу данных")
+            logger.info("Объекты из Era закончили соединение с базой данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из Era возникла ошибка: {e}")
 

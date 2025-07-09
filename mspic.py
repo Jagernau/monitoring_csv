@@ -117,7 +117,7 @@ class ScautData:
                     )
         try:
             crud.add_objects(list_obj)
-            logger.info("Объекты из scaut добавлены в базу данных")
+            logger.info("Объекты из scaut закончили соединение с базой данных")
         except Exception as e:
             logger.error(f"В добавлении в базу данных объектов из scaut возникла ошибка: {e}")
 
