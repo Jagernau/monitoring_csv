@@ -170,3 +170,4 @@ cython_debug/
 *.doc
 *.docx
 *log.txt
+log.txt
