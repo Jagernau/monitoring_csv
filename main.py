@@ -10,6 +10,8 @@ from mspic import ScautData
 from mera import EraData
 from mwlnl import WlocalData
 from mscout_tree import ScoutTreeData
+from maxenta import AxentaData
+
 from send_to_yandex import send_csv_to_yandex
 from my_logger import logger
 
@@ -76,6 +78,15 @@ def job():
 
     time.sleep(30)
 
+    try:
+        axenta = AxentaData()
+        axenta.list_to_csv()
+        logger.info("Аксента успешно обновлена")
+    except Exception as e:
+        logger.error(f"В обновлении Аксента возникла ошибка: {e}")
+
+    time.sleep(30)
+
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     try:
@@ -119,6 +130,11 @@ def job():
                 seven_get_reader = csv.reader(seven_get_file)
                 next(seven_get_reader)
                 all_gets_writer.writerows(seven_get_reader)
+
+            with open('axenta.csv', mode='r', encoding='utf-8') as eath_get_file:
+                eath_get_reader = csv.reader(eath_get_file)
+                next(eath_get_reader)
+                all_gets_writer.writerows(eath_get_reader)
 
         logger.info("Все данные успешно обновлены и записаны в csv")
     except Exception as e:
