@@ -14,7 +14,7 @@ from maxenta import AxentaData
 
 from send_to_yandex import send_csv_to_yandex
 from my_logger import logger
-
+import traceback
 
 def job():
     try:
@@ -23,6 +23,8 @@ def job():
         logger.info("Wialon успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Wialon возникла ошибка: {e}")
+        logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -32,6 +34,8 @@ def job():
         logger.info("ФОРТ успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении ФОРТ возникла ошибка: {e}")
+        logger.error(f"В обновлении ФОРТ возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении ФОРТ возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -41,6 +45,8 @@ def job():
         logger.info("Глонасссофт успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Глонасссофтов возникла ошибка: {e}")
+        logger.error(f"В обновлении Глонасссофтов возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Глонасссофтов возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -50,6 +56,8 @@ def job():
         logger.info("СКАУТ успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении СКАУТ возникла ошибка: {e}")
+        logger.error(f"В обновлении СКАУТ возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении СКАУТ возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -59,6 +67,8 @@ def job():
         logger.info("Era успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Era возникла ошибка: {e}")
+        logger.error(f"В обновлении Era возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Era возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -68,6 +78,8 @@ def job():
         logger.info("Wlocal успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Wlocal возникла ошибка: {e}")
+        logger.error(f"В обновлении Wlocal возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Wlocal  возникла ошибка: {traceback.format_stack()}")
 
     try:
         scout_tree = ScoutTreeData()
@@ -75,6 +87,8 @@ def job():
         logger.info("Scout_365 успешно обновлен")
     except Exception as e:
         logger.error(f"В обновлении Scout_365 возникла ошибка: {e}")
+        logger.error(f"В обновлении Scout_365 возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Scout_365  возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
@@ -84,6 +98,8 @@ def job():
         logger.info("Аксента успешно обновлена")
     except Exception as e:
         logger.error(f"В обновлении Аксента возникла ошибка: {e}")
+        logger.error(f"В обновлении Аксента  возникла ошибка: {traceback.format_exc()}")
+        logger.error(f"В обновлении Аксента  возникла ошибка: {traceback.format_stack()}")
 
     time.sleep(30)
 
