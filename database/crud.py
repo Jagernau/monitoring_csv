@@ -81,3 +81,11 @@ def get_mysql_logins():
         my_logger.logger.error(f"Ошибка в получении логинов БД_1 {ex}")
     finally:
         session.close()
+
+
+
+def get_db_clients():
+    session = msdb().session
+    all_clients = session.query(msmodels.Contragents).all()
+    session.close()
+    return {contr.ca_name: contr.ca_id for contr in all_clients}

@@ -32,6 +32,17 @@ class AxentaData:
         if all_objs.status_code == 200:
             return all_objs.json()
 
+
+    def __get_groups(self, token):
+        "Список объектов"
+        token = token
+        obj_url = f"{self.url_base}objects/groups/"
+        headers = {'Authorization': f'Token {token}', 'Accept': 'application/json'}
+        all_objs = requests.get(obj_url, headers=headers)
+        if all_objs.status_code == 200:
+            return all_objs.json()
+
+
     def __conn(self):
         "Получение данных из СМ"
         all_loggins = crud.get_mysql_logins()
@@ -40,17 +51,50 @@ class AxentaData:
             token = self.__token(login=login[0], password=login[1])
             if token:
                 objects = self.__get_objs(token)
+                obj_groups = self.__get_groups(token)
                 if not objects:
                     logger.error(f'Не получены объекты из AXENTA')
-                for obj in objects:
-                    final_result.append([
-                            re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
-                            " " + str(login[2]), # Группа ID
-                            " 18", # Мониторинг система ID
-                            " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
-                            " " + str(obj["id"]), # Объект ID
-                            " Да", # Активность
-                            ])
+
+                if len(obj_groups) < 1:
+                    for obj in objects:
+                        final_result.append([
+                                re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
+                                " " + str(login[2]), # Группа ID
+                                " 18", # Мониторинг система ID
+                                " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
+                                " " + str(obj["id"]), # Объект ID
+                                " Да", # Активность
+                                ])
+
+                if len(obj_groups) >= 1:
+                    cli_db = crud.get_db_clients()
+                    count_groups_onec = 0
+                    for group_monitor in obj_groups:
+                        if cli_db.get(str(group_monitor['name'])):
+                            count_groups_onec += 1
+                            for obj in objects:
+                                if obj["id"] in group_monitor['tiedObjects']:
+                                    final_result.append([
+                                            re.sub("[^0-9a-zA-ZА-я-_]+", " ", group_monitor['name']), # Имя группы
+                                            " " + str(group_monitor['id']), # Группа ID
+                                            " 18", # Мониторинг система ID
+                                            " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
+                                            " " + str(obj["id"]), # Объект ID
+                                            " Да", # Активность
+                                            ])
+
+                    if count_groups_onec == 0:
+                        for obj in objects:
+                            final_result.append([
+                                    re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
+                                    " " + str(login[2]), # Группа ID
+                                    " 18", # Мониторинг система ID
+                                    " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
+                                    " " + str(obj["id"]), # Объект ID
+                                    " Да", # Активность
+                                    ])
+
+
         return final_result
 
 
