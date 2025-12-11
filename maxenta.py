@@ -48,43 +48,22 @@ class AxentaData:
         all_loggins = crud.get_mysql_logins()
         final_result = []
         for login in all_loggins:
-            token = self.__token(login=login[0], password=login[1])
-            if token:
-                objects = self.__get_objs(token)
-                obj_groups = self.__get_groups(token)
-                if not objects:
-                    logger.error(f'Не получены объекты из AXENTA')
+            try:
+                token = self.__token(login=login[0], password=login[1])
+            except:
+                logger.error(f'Не получен токен под {login[0]}')
+                continue
+            else:
+                if token:
+                    objects = self.__get_objs(token)
+                    obj_groups = self.__get_groups(token)
+                    if not objects:
+                        logger.error(f'Не получены объекты из AXENTA')
 
-                if len(obj_groups) < 1:
-                    for obj in objects:
-                        final_result.append([
-                                re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
-                                " " + str(login[2]), # Группа ID
-                                " 18", # Мониторинг система ID
-                                " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
-                                " " + str(obj["id"]), # Объект ID
-                                " Да", # Активность
-                                ])
-
-                if len(obj_groups) >= 1:
-                    cli_db = crud.get_db_clients()
-                    count_groups_onec = 0
-                    for group_monitor in obj_groups:
-                        if cli_db.get(str(group_monitor['name'])):
-                            count_groups_onec += 1
-                            for obj in objects:
-                                if obj["id"] in group_monitor['tiedObjects']:
-                                    final_result.append([
-                                            re.sub("[^0-9a-zA-ZА-я-_]+", " ", group_monitor['name']), # Имя группы
-                                            " " + str(group_monitor['id']), # Группа ID
-                                            " 18", # Мониторинг система ID
-                                            " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
-                                            " " + str(obj["id"]), # Объект ID
-                                            " Да", # Активность
-                                            ])
-
-                    if count_groups_onec == 0:
+                    if len(obj_groups) < 1:
                         for obj in objects:
+                            if "uniqueId" not in obj:
+                                continue
                             final_result.append([
                                     re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
                                     " " + str(login[2]), # Группа ID
@@ -93,6 +72,38 @@ class AxentaData:
                                     " " + str(obj["id"]), # Объект ID
                                     " Да", # Активность
                                     ])
+
+                    if len(obj_groups) >= 1:
+                        cli_db = crud.get_db_clients()
+                        count_groups_onec = 0
+                        for group_monitor in obj_groups:
+                            if cli_db.get(str(group_monitor['name'])):
+                                count_groups_onec += 1
+                                for obj in objects:
+                                    if "uniqueId" not in obj:
+                                        continue
+                                    if obj["id"] in group_monitor['tiedObjects']:
+                                        final_result.append([
+                                                re.sub("[^0-9a-zA-ZА-я-_]+", " ", group_monitor['name']), # Имя группы
+                                                " " + str(group_monitor['id']), # Группа ID
+                                                " 18", # Мониторинг система ID
+                                                " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
+                                                " " + str(obj["id"]), # Объект ID
+                                                " Да", # Активность
+                                                ])
+
+                        if count_groups_onec == 0:
+                            for obj in objects:
+                                if "uniqueId" not in obj:
+                                    continue
+                                final_result.append([
+                                        re.sub("[^0-9a-zA-ZА-я-_]+", " ", login[0]), # Имя группы
+                                        " " + str(login[2]), # Группа ID
+                                        " 18", # Мониторинг система ID
+                                        " " + re.sub("[^0-9a-zA-ZА-я-_]+", " ", obj["name"]), # Объект имя
+                                        " " + str(obj["id"]), # Объект ID
+                                        " Да", # Активность
+                                        ])
 
 
         return final_result
