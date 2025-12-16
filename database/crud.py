@@ -74,7 +74,8 @@ def get_mysql_logins():
                     msmodels.Contragents,
                     msmodels.LoginUsers.contragent_id == msmodels.Contragents.ca_id
                 ).filter(
-                    msmodels.LoginUsers.system_id == 23
+                    msmodels.LoginUsers.system_id == 23,
+                    msmodels.LoginUsers.is_billing == 1
                 ).all()
         return all_loggins
     except SQLAlchemyError as ex:

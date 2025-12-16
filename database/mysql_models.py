@@ -713,6 +713,7 @@ class LoginUsers(Base):
 
     contragent = relationship('Contragents', back_populates='Login_users')
     system = relationship('MonitoringSystem', back_populates='Login_users')
+    is_billing = Column(TINYINT, comment='Билинговый признак')
 
 
 class AuthGroupPermissions(Base):
