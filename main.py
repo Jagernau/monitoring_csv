@@ -3,7 +3,7 @@ import datetime
 import schedule
 import time
 
-from mwln import WialonData
+# from mwln import WialonData
 from mfrt import FortData
 from mgls import GlanassData
 from mspic import ScautData
@@ -17,16 +17,17 @@ from my_logger import logger
 import traceback
 
 def job():
-    try:
-        wialon = WialonData()
-        wialon.dict_to_csv()
-        logger.info("Wialon успешно обновлен")
-    except Exception as e:
-        logger.error(f"В обновлении Wialon возникла ошибка: {e}")
-        logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_exc()}")
-        logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_stack()}")
 
-    time.sleep(30)
+    # try:
+    #     wialon = WialonData()
+    #     wialon.dict_to_csv()
+    #     logger.info("Wialon успешно обновлен")
+    # except Exception as e:
+    #     logger.error(f"В обновлении Wialon возникла ошибка: {e}")
+    #     logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_exc()}")
+    #     logger.error(f"В обновлении Wialon возникла ошибка: {traceback.format_stack()}")
+    #
+    # time.sleep(30)
 
     try:
         fort = FortData()
@@ -110,10 +111,10 @@ def job():
         with open(f'{current_time}_all_gets_autosave.csv', mode='w', newline='', encoding='utf-8') as all_gets_file:
             all_gets_writer = csv.writer(all_gets_file)
 
-            # Открываем первый файл и добавляем его содержимое в новый файл
-            with open('wialon.csv', mode='r', encoding='utf-8') as first_get_file:
-                first_get_reader = csv.reader(first_get_file)
-                all_gets_writer.writerows(first_get_reader)
+            # # Открываем первый файл и добавляем его содержимое в новый файл
+            # with open('wialon.csv', mode='r', encoding='utf-8') as first_get_file:
+            #     first_get_reader = csv.reader(first_get_file)
+            #     all_gets_writer.writerows(first_get_reader)
 
             # Открываем второй файл и добавляем его содержимое в новый файл
             with open('fort.csv', mode='r', encoding='utf-8') as second_get_file:
