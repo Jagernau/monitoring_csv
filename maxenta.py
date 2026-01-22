@@ -77,7 +77,7 @@ class AxentaData:
                         cli_db = crud.get_db_clients()
                         count_groups_onec = 0
                         for group_monitor in obj_groups:
-                            if cli_db.get(str(group_monitor['name'])):
+                            if cli_db.get(str(group_monitor['name']).split('__')[0]):
                                 count_groups_onec += 1
                                 for obj in objects:
                                     if "uniqueId" not in obj:
