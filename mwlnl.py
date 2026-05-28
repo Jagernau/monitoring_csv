@@ -62,7 +62,6 @@ class WlocalData:
         for item in objects:
             item["crt"] = str(item["crt"])
             item["id"] = str(item["id"])
- 
         df = pd.DataFrame(objects)
         df =  df[['client', 'crt', 'nm', 'id', "act"]]
         df["crt"] = df["crt"].astype(str)

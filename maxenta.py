@@ -58,7 +58,7 @@ class AxentaData:
                     objects = self.__get_objs(token)
                     obj_groups = self.__get_groups(token)
                     if not objects:
-                        logger.error(f'Не получены объекты из AXENTA')
+                        logger.warning(f'Не получены объекты из AXENTA, логина {login}')
 
                     if len(obj_groups) < 1:
                         for obj in objects:
