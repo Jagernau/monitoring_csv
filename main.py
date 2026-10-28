@@ -77,14 +77,14 @@ def job():
 
     time.sleep(30)
 
-    try:
-        wlocal = WlocalData()
-        wlocal.dict_to_csv()
-        logger.info("Wlocal успешно обновлен")
-    except Exception as e:
-        logger.error(f"В обновлении Wlocal возникла ошибка: {e}")
-
-    time.sleep(30)
+    # try:
+    #     wlocal = WlocalData()
+    #     wlocal.dict_to_csv()
+    #     logger.info("Wlocal успешно обновлен")
+    # except Exception as e:
+    #     logger.error(f"В обновлении Wlocal возникла ошибка: {e}")
+    #
+    # time.sleep(30)
 
     try:
         scout_tree = ScoutTreeData()
@@ -127,10 +127,10 @@ def job():
                 next(five_get_reader)
                 all_gets_writer.writerows(five_get_reader)
 
-            with open('wlocal.csv', mode='r', encoding='utf-8') as six_get_file:
-                six_get_reader = csv.reader(six_get_file)
-                next(six_get_reader)
-                all_gets_writer.writerows(six_get_reader)
+            # with open('wlocal.csv', mode='r', encoding='utf-8') as six_get_file:
+            #     six_get_reader = csv.reader(six_get_file)
+            #     next(six_get_reader)
+            #     all_gets_writer.writerows(six_get_reader)
 
             with open('scout_tree.csv', mode='r', encoding='utf-8') as seven_get_file:
                 seven_get_reader = csv.reader(seven_get_file)
